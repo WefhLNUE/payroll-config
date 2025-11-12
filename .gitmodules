@@ -3,4 +3,10 @@
 	url = https://github.com/kanzyhany/employee-profile
 [submodule "Leaves"]
 	path = Leaves
-	url = https://github.com/mariamgeorge-git/Leaves.git
+	url = https://github.com/WefhLNUE/Leaves
+[submodule "Organization_Structure"]
+	path = Organization_Structure
+	url = https://github.com/WefhLNUE/Organization_Structure
+[submodule "payroll"]
+	path = payroll
+	url = https://github.com/WefhLNUE/payroll
