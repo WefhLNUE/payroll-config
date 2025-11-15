@@ -1,9 +1,6 @@
 [submodule "employee-profile"]
 	path = employee-profile
 	url = https://github.com/kanzyhany/employee-profile
-[submodule "Leaves"]
-	path = Leaves
-	url = https://github.com/WefhLNUE/Leaves
 [submodule "Organization_Structure"]
 	path = Organization_Structure
 	url = https://github.com/WefhLNUE/Organization_Structure
@@ -19,3 +16,6 @@
 [submodule "recruitmentNew"]
 	path = recruitmentNew
 	url = https://github.com/WefhLNUE/recruitmentNew
+[submodule "leaves-subsystem"]
+	path = leaves-subsystem
+	url = https://github.com/WefhLNUE/leaves-subsystem
