@@ -1,0 +1,42 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Build outputs
+dist/
+*.tsbuildinfo
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Environment
+.env
+.env.local
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+
+# Exclude everything except schemas and mock-data
+/*
+!.gitignore
+!/src/
+/src/*
+!/src/Schemas/
+!/src/mock-data/
+/src/Schemas/*
+!/src/Schemas/*.ts
+/src/mock-data/*
+!/src/mock-data/*.ts
+
