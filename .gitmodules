@@ -13,3 +13,9 @@
 [submodule "hr-recruitment"]
 	path = hr-recruitment
 	url = https://github.com/WefhLNUE/hr-recruitment
+[submodule "payroll-config"]
+	path = payroll-config
+	url = https://github.com/WefhLNUE/payroll-config.git
+[submodule "Payroll-Processing-Execution-subSystem"]
+	path = Payroll-Processing-Execution-subSystem
+	url = https://github.com/WefhLNUE/Payroll-Processing-Execution-subSystem
