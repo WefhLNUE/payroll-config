@@ -4,7 +4,6 @@
  */
 
 import { PayGrade, PayGradeSchema } from './PayGrade.schema';
-import { InsuranceBracket, InsuranceBracketSchema } from './InsuranceBracket.schema';
 import { Deduction, DeductionSchema } from './Deduction.schema';
 import { ExpenseClaim, ExpenseClaimSchema } from './ExpenseClaim.schema';
 
@@ -83,18 +82,6 @@ validateSchema(
   PayGrade,
   PayGradeSchema,
   ['name', 'position', 'department', 'minSalary', 'maxSalary', 'basePay', 'status'],
-  {
-    status: ['draft', 'pending', 'approved', 'rejected'],
-  }
-);
-
-// Validate InsuranceBracket Schema
-console.log('🔍 Validating InsuranceBracket Schema...');
-validateSchema(
-  'InsuranceBracket',
-  InsuranceBracket,
-  InsuranceBracketSchema,
-  ['name', 'minSalary', 'maxSalary', 'employeeContributionRate', 'employerContributionRate', 'effectiveFrom', 'status'],
   {
     status: ['draft', 'pending', 'approved', 'rejected'],
   }

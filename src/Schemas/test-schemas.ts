@@ -5,7 +5,6 @@
 
 import 'reflect-metadata';
 import { PayGradeSchema } from './PayGrade.schema';
-import { InsuranceBracketSchema } from './InsuranceBracket.schema';
 import { DeductionSchema } from './Deduction.schema';
 import { ExpenseClaimSchema } from './ExpenseClaim.schema';
 
@@ -13,7 +12,6 @@ console.log('🧪 Testing Schema Compilation...\n');
 
 const schemas = [
   { name: 'PayGrade', schema: PayGradeSchema },
-  { name: 'InsuranceBracket', schema: InsuranceBracketSchema },
   { name: 'Deduction', schema: DeductionSchema },
   { name: 'ExpenseClaim', schema: ExpenseClaimSchema },
 ];
