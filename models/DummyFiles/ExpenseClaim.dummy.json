@@ -1,0 +1,14 @@
+{
+  "_id": "675a25b07bf010001f000070",
+  "employeeId": "675a00107bf010001f000999",
+  "amount": 850,
+  "type": "travel",
+  "description": "Taxi fare for client meeting",
+  "receipts": [
+    "https://company-storage.com/receipts/taxi123.jpg"
+  ],
+  "status": "approved",
+  "approvedAt": "2025-01-08T17:00:00.000Z",
+  "createdAt": "2025-01-08T14:22:00.000Z",
+  "updatedAt": "2025-01-08T17:00:00.000Z"
+}

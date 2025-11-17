@@ -1,0 +1,8 @@
+{
+  "_id": "675a20087bf010001f000030",
+  "name": "Health Insurance Coverage",
+  "description": "Employer covers part of employee health insurance",
+  "employerContributionPercent": 12,
+  "createdAt": "2025-01-04T11:00:00.000Z",
+  "updatedAt": "2025-01-04T11:00:00.000Z"
+}

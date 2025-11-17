@@ -1,0 +1,9 @@
+{
+  "_id": "675a22f77bf010001f000050",
+  "type": "penalty",
+  "amount": 250,
+  "description": "Late arrival penalty for January",
+  "status": "approved",
+  "createdAt": "2025-01-06T08:00:00.000Z",
+  "updatedAt": "2025-01-06T08:00:00.000Z"
+}
