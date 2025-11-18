@@ -1,0 +1,9 @@
+{
+  "_id": "675a213f7bf010001f000040",
+  "configurationType": "TaxPolicy",
+  "configurationId": "675a20827bf010001f000039",
+  "versionNumber": 3,
+  "changes": "Updated tax bracket for incomes above 20,000 EGP",
+  "createdAt": "2025-01-05T15:45:00.000Z",
+  "updatedAt": "2025-01-05T15:45:00.000Z"
+}

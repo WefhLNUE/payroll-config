@@ -5,13 +5,9 @@ import { Document } from 'mongoose';
 export class DeductionPolicy extends Document {
   @Prop({ required: true })
   name: string;
-
   @Prop({ enum: ['FIXED', 'PERCENTAGE'], required: true })
   type: string;
-
-  @Prop({ required: true })
   amount: number; // fixed amount or percentage
 }
-
 export const DeductionPolicySchema =
   SchemaFactory.createForClass(DeductionPolicy);

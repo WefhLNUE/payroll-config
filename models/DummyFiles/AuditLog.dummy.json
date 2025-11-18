@@ -1,0 +1,10 @@
+{
+  "_id": "675a1f007bf010001f000020",
+  "userId": "675a1e807bf010001f000011",
+  "action": "UPDATE",
+  "entityType": "AllowancePolicy",
+  "entityId": "675a1c9f7bf010001f000001",
+  "details": "Updated transportation allowance from 800 → 1000",
+  "createdAt": "2025-01-03T12:15:00.000Z",
+  "updatedAt": "2025-01-03T12:15:00.000Z"
+}

@@ -1,0 +1,8 @@
+{
+  "_id": "675a1c9f7bf010001f000001",
+  "name": "Transportation Allowance",
+  "calculationType": "FIXED",
+  "value": 1000,
+  "createdAt": "2025-01-01T10:00:00.000Z",
+  "updatedAt": "2025-01-01T10:00:00.000Z"
+}

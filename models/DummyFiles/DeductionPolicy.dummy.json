@@ -1,0 +1,8 @@
+{
+  "_id": "675a24107bf010001f000060",
+  "name": "Monthly Late Penalty",
+  "type": "PERCENTAGE",
+  "amount": 5,
+  "createdAt": "2025-01-07T13:00:00.000Z",
+  "updatedAt": "2025-01-07T13:00:00.000Z"
+}
