@@ -3,83 +3,53 @@
  */
 
 // Payroll Execution ----------------------------------------------------
-export interface PayrollExecutionConfigOutput {
-  payrollCycleId: string;
-  readyConfigurations: {
-    payTypes: string[];
-    taxIds: string[];
-    insuranceBracketIds: string[];
-    signingBonusIds: string[];
-    terminationBenefitIds: string[];
+export interface PayrollExecutionSummary {
+  note: string;
+  availableConfigs: {
+    payTypes: number;
+    taxBrackets: number;
+    insuranceBrackets: number;
+    signingBonuses: number;
+    terminationBenefits: number;
   };
-  pendingItems: {
-    payTypes: string[];
-    insuranceBracketIds: string[];
-    signingBonusIds: string[];
-    terminationBenefitIds: string[];
-  };
-  notes: string;
-  generatedAt: string;
 }
 
-/** Configuration summary sent to Payroll Execution before each run */
-export const payrollExecutionOutput: PayrollExecutionConfigOutput = {
-  payrollCycleId: 'cycle-2025-02',
-  readyConfigurations: {
-    payTypes: ['payt-001', 'payt-003'],
-    taxIds: ['tax-001'],
-    insuranceBracketIds: ['ins-001', 'ins-003'],
-    signingBonusIds: ['sign-001', 'sign-003'],
-    terminationBenefitIds: ['term-001']
-  },
-  pendingItems: {
-    payTypes: ['payt-002'],
-    insuranceBracketIds: ['ins-002'],
-    signingBonusIds: ['sign-002'],
-    terminationBenefitIds: ['term-002']
-  },
-  notes: 'Cycle 2025-02 is executable once pending approvals clear.',
-  generatedAt: '2025-02-25T12:00:00.000Z'
+/** Aggregated configuration counts sent to Payroll Execution */
+export const toPayrollExecution: PayrollExecutionSummary = {
+  note:
+    'Payroll Configuration has finalized the February 2025 run: counts reflect APPROVED or PAID artifacts ready for ingestion by Payroll Execution (Milestone 1 demo).',
+  availableConfigs: {
+    payTypes: 2, // payt-001, payt-003
+    taxBrackets: 2, // tax-001, tax-002
+    insuranceBrackets: 2, // ins-001, ins-003
+    signingBonuses: 2, // sign-001 (paid), sign-003 (approved)
+    terminationBenefits: 2 // term-001 (approved), term-003 (paid)
+  }
 };
 
 // Employee Profile -----------------------------------------------------
-export interface EmployeePayslipLink {
-  employeeId: string;
-  payslipId: string;
-  payPeriod: string;
-  netSalary: number;
-  status: 'paid' | 'approved' | 'locked';
-  downloadUrl: string;
-  publishedAt: string;
+export interface EmployeeProfilePayslipSample {
+  note: string;
+  samplePayslip: {
+    employeeId: string;
+    period: string;
+    grossSalary: number;
+    netSalary: number;
+    status: 'draft' | 'under_review' | 'approved' | 'locked' | 'paid' | 'rejected';
+    downloadUrl: string | null;
+  };
 }
 
-/** Payslip metadata delivered to Employee Profile for self-service portals */
-export const employeePayslipOutputs: EmployeePayslipLink[] = [
-  {
+/** Payslip metadata pushed to Employee Profile for the self-service portal */
+export const toEmployeeProfile: EmployeeProfilePayslipSample = {
+  note:
+    'After Finance approval, Payroll Configuration publishes each payslip reference so Employee Profile can surface downloadable PDFs to staff.',
+  samplePayslip: {
     employeeId: 'emp-001',
-    payslipId: 'payslip-001',
-    payPeriod: 'Jan-2025',
+    period: 'Jan-2025',
+    grossSalary: 90000,
     netSalary: 72900,
     status: 'paid',
-    downloadUrl: 'https://payroll.example.com/payslips/cycle-2025-01/emp-001.pdf',
-    publishedAt: '2025-02-05T06:00:00.000Z'
-  },
-  {
-    employeeId: 'emp-002',
-    payslipId: 'payslip-002',
-    payPeriod: 'Feb-2025',
-    netSalary: 20654.55,
-    status: 'approved',
-    downloadUrl: 'https://payroll.example.com/payslips/cycle-2025-02/emp-002.pdf',
-    publishedAt: '2025-03-05T06:00:00.000Z'
-  },
-  {
-    employeeId: 'emp-003',
-    payslipId: 'payslip-003',
-    payPeriod: 'Jan-2025',
-    netSalary: 111170.45,
-    status: 'locked',
-    downloadUrl: 'https://payroll.example.com/payslips/cycle-2025-01/emp-003.pdf',
-    publishedAt: '2025-02-10T06:00:00.000Z'
+    downloadUrl: 'https://payroll.example.com/payslips/cycle-2025-01/emp-001.pdf'
   }
-];
+};

@@ -3,412 +3,324 @@
  */
 
 // Employee Profile -----------------------------------------------------
-export interface EmployeeProfileInput {
-  employeeId: string;
-  fullName: string;
-  nationalId: string;
-  department: string;
-  position: string;
+export interface EmployeeProfileRecord {
+  _id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  contractType: 'full-time' | 'contract';
   baseSalary: number;
+  departmentId: string;
+  positionId: string;
   hireDate: string;
-  employmentStatus: 'active' | 'terminated' | 'on_leave';
-  payTypeId: string;
-  bankAccountNumber: string;
-  bankName: string;
-  taxId: string;
-  socialInsuranceNumber: string;
-  notes?: string;
+  status: 'active' | 'resigned';
 }
 
-/** Employee records received from Employee Profile service */
-export const employeeProfileInputs: EmployeeProfileInput[] = [
+/** Data pulled from Employee Profile to seed payroll employees */
+export const fromEmployeeProfile: EmployeeProfileRecord[] = [
   {
-    employeeId: 'emp-001',
-    fullName: 'Ahmed Mohamed Hassan',
-    nationalId: '29805123456789',
-    department: 'Engineering',
-    position: 'Senior Software Developer',
+    _id: 'emp-001',
+    firstName: 'Ahmed',
+    lastName: 'Hassan',
+    email: 'ahmed.hassan@company.com',
+    contractType: 'full-time',
     baseSalary: 35000,
+    departmentId: 'dept-ENG',
+    positionId: 'pos-ENG-005',
     hireDate: '2025-01-01T00:00:00.000Z',
-    employmentStatus: 'active',
-    payTypeId: 'payt-001',
-    bankAccountNumber: '1234567890123456',
-    bankName: 'National Bank of Egypt',
-    taxId: '123-456-789',
-    socialInsuranceNumber: 'EG-987654321',
-    notes: 'Eligible for signing bonus'
+    status: 'active'
   },
   {
-    employeeId: 'emp-002',
-    fullName: 'Sara Ali Ibrahim',
-    nationalId: '29905234567890',
-    department: 'Marketing',
-    position: 'Marketing Manager',
+    _id: 'emp-002',
+    firstName: 'Sara',
+    lastName: 'Ibrahim',
+    email: 'sara.ibrahim@company.com',
+    contractType: 'full-time',
     baseSalary: 28000,
+    departmentId: 'dept-MKT',
+    positionId: 'pos-MKT-006',
     hireDate: '2025-01-15T00:00:00.000Z',
-    employmentStatus: 'active',
-    payTypeId: 'payt-001',
-    bankAccountNumber: '2345678901234567',
-    bankName: 'Commercial International Bank',
-    taxId: '234-567-890',
-    socialInsuranceNumber: 'EG-876543210',
-    notes: 'Probation ends 15 Apr 2025'
+    status: 'active'
   },
   {
-    employeeId: 'emp-003',
-    fullName: 'Mohamed Tarek Farid',
-    nationalId: '29705012345678',
-    department: 'Sales',
-    position: 'Sales Manager',
+    _id: 'emp-003',
+    firstName: 'Mohamed',
+    lastName: 'Farid',
+    email: 'mohamed.farid@company.com',
+    contractType: 'full-time',
     baseSalary: 25000,
+    departmentId: 'dept-SLS',
+    positionId: 'pos-SLS-006',
     hireDate: '2019-07-01T00:00:00.000Z',
-    employmentStatus: 'terminated',
-    payTypeId: 'payt-001',
-    bankAccountNumber: '3456789012345678',
-    bankName: 'Banque Misr',
-    taxId: '345-678-901',
-    socialInsuranceNumber: 'EG-765432109',
-    notes: 'Resigned effective 31 Jan 2025'
+    status: 'resigned'
+  },
+  {
+    _id: 'emp-004',
+    firstName: 'Laila',
+    lastName: 'Mostafa',
+    email: 'laila.mostafa@company.com',
+    contractType: 'contract',
+    baseSalary: 20000,
+    departmentId: 'dept-PMO',
+    positionId: 'pos-PMO-003',
+    hireDate: '2025-02-01T00:00:00.000Z',
+    status: 'active'
+  },
+  {
+    _id: 'emp-005',
+    firstName: 'Karim',
+    lastName: 'Saad',
+    email: 'karim.saad@company.com',
+    contractType: 'full-time',
+    baseSalary: 18000,
+    departmentId: 'dept-SRV',
+    positionId: 'pos-SRV-002',
+    hireDate: '2023-03-15T00:00:00.000Z',
+    status: 'resigned'
+  },
+  {
+    _id: 'emp-006',
+    firstName: 'Nora',
+    lastName: 'Gamal',
+    email: 'nora.gamal@company.com',
+    contractType: 'contract',
+    baseSalary: 30000,
+    departmentId: 'dept-PMO',
+    positionId: 'pos-PMO-004',
+    hireDate: '2022-01-10T00:00:00.000Z',
+    status: 'resigned'
+  },
+  {
+    _id: 'emp-007',
+    firstName: 'Rami',
+    lastName: 'Khattab',
+    email: 'rami.khattab@company.com',
+    contractType: 'contract',
+    baseSalary: 24000,
+    departmentId: 'dept-OPE',
+    positionId: 'pos-OPE-003',
+    hireDate: '2024-06-01T00:00:00.000Z',
+    status: 'active'
   }
 ];
 
 // Onboarding -----------------------------------------------------------
-export interface OnboardingInput {
-  contractId: string;
+export interface OnboardingContractRecord {
+  _id: string;
   employeeId: string;
-  contractType: string;
-  contractStartDate: string;
-  contractEndDate?: string | null;
-  probationEndDate?: string | null;
+  contractType: 'full-time' | 'contract';
+  startDate: string;
   baseSalary: number;
-  signingBonusEligible: boolean;
-  signingBonusAmount: number;
-  signingBonusType: 'one-time' | 'split' | null;
-  signingBonusPaymentTerms?: string | null;
-  createdBy: string;
-  contractStatus: 'pending' | 'active' | 'suspended';
-  notes?: string;
+  signingBonus: number;
+  bonusEligible: boolean;
+  signedDate: string;
+  status: 'pending' | 'active';
 }
 
-/** Onboarding data used for signing bonus and pay type setup */
-export const onboardingInputs: OnboardingInput[] = [
+/** Contracts received from Onboarding (REQ-PY-19) */
+export const fromOnboarding: OnboardingContractRecord[] = [
   {
-    contractId: 'contract-001',
+    _id: 'contract-001',
     employeeId: 'emp-001',
     contractType: 'full-time',
-    contractStartDate: '2025-01-01T00:00:00.000Z',
-    contractEndDate: null,
-    probationEndDate: '2025-04-01T00:00:00.000Z',
+    startDate: '2025-01-01T00:00:00.000Z',
     baseSalary: 35000,
-    signingBonusEligible: true,
-    signingBonusAmount: 50000,
-    signingBonusType: 'one-time',
-    signingBonusPaymentTerms: '100% upon joining',
-    createdBy: 'user-hr-001',
-    contractStatus: 'active',
-    notes: 'Senior engineer offer approved by CTO'
+    signingBonus: 50000,
+    bonusEligible: true,
+    signedDate: '2024-12-20T00:00:00.000Z',
+    status: 'active'
   },
   {
-    contractId: 'contract-002',
+    _id: 'contract-002',
     employeeId: 'emp-002',
     contractType: 'full-time',
-    contractStartDate: '2025-01-15T00:00:00.000Z',
-    contractEndDate: null,
-    probationEndDate: '2025-04-15T00:00:00.000Z',
+    startDate: '2025-01-15T00:00:00.000Z',
     baseSalary: 28000,
-    signingBonusEligible: true,
-    signingBonusAmount: 30000,
-    signingBonusType: 'split',
-    signingBonusPaymentTerms: '50% after probation, 50% after 6 months',
-    createdBy: 'user-hr-001',
-    contractStatus: 'active',
-    notes: 'Marketing manager for Luxor branch'
+    signingBonus: 30000,
+    bonusEligible: true,
+    signedDate: '2025-01-05T00:00:00.000Z',
+    status: 'active'
   },
   {
-    contractId: 'contract-003',
+    _id: 'contract-004',
     employeeId: 'emp-004',
-    contractType: 'contract-based',
-    contractStartDate: '2025-02-01T00:00:00.000Z',
-    contractEndDate: '2025-11-30T23:59:59.000Z',
-    probationEndDate: null,
+    contractType: 'contract',
+    startDate: '2025-02-01T00:00:00.000Z',
     baseSalary: 20000,
-    signingBonusEligible: false,
-    signingBonusAmount: 0,
-    signingBonusType: null,
-    signingBonusPaymentTerms: null,
-    createdBy: 'user-hr-002',
-    contractStatus: 'pending',
-    notes: 'Project controls analyst'
+    signingBonus: 20000,
+    bonusEligible: true,
+    signedDate: '2025-01-28T00:00:00.000Z',
+    status: 'pending'
   }
 ];
 
 // Offboarding ----------------------------------------------------------
-export interface OffboardingInput {
-  offboardingId: string;
+export interface OffboardingRecord {
+  _id: string;
   employeeId: string;
-  terminationType: 'voluntary_resignation' | 'involuntary_termination' | 'mutual_agreement' | 'end_of_contract';
-  terminationDate: string;
+  offboardingType: 'voluntary_resignation' | 'involuntary_termination' | 'end_of_contract';
+  resignationDate: string;
   lastWorkingDay: string;
-  noticePeriodDays: number;
-  hrClearanceStatus: 'pending' | 'cleared' | 'blocked';
-  hrClearanceDate?: string | null;
-  assetsReturned: boolean;
-  exitInterviewCompleted: boolean;
-  finalSettlementRequired: boolean;
-  createdBy: string;
-  notes?: string;
+  yearsOfService: number;
+  finalSalary: number;
+  clearanceStatus: 'pending' | 'cleared' | 'blocked';
+  clearanceDate: string | null;
+  reason: string;
 }
 
-/** Offboarding records for termination benefits */
-export const offboardingInputs: OffboardingInput[] = [
+/** Offboarding packets (REQ-PY-20) consumed for termination calculations */
+export const fromOffboarding: OffboardingRecord[] = [
   {
-    offboardingId: 'offboard-001',
+    _id: 'offboard-001',
     employeeId: 'emp-003',
-    terminationType: 'voluntary_resignation',
-    terminationDate: '2025-01-31T00:00:00.000Z',
+    offboardingType: 'voluntary_resignation',
+    resignationDate: '2025-01-01T00:00:00.000Z',
     lastWorkingDay: '2025-01-31T00:00:00.000Z',
-    noticePeriodDays: 30,
-    hrClearanceStatus: 'cleared',
-    hrClearanceDate: '2025-01-24T14:00:00.000Z',
-    assetsReturned: true,
-    exitInterviewCompleted: true,
-    finalSettlementRequired: true,
-    createdBy: 'user-hr-001',
-    notes: 'All assets returned'
+    yearsOfService: 5.5,
+    finalSalary: 25000,
+    clearanceStatus: 'cleared',
+    clearanceDate: '2025-01-24T14:00:00.000Z',
+    reason: 'Pursuing overseas offer'
   },
   {
-    offboardingId: 'offboard-002',
+    _id: 'offboard-002',
     employeeId: 'emp-005',
-    terminationType: 'involuntary_termination',
-    terminationDate: '2025-02-15T00:00:00.000Z',
+    offboardingType: 'involuntary_termination',
+    resignationDate: '2025-02-10T00:00:00.000Z',
     lastWorkingDay: '2025-02-15T00:00:00.000Z',
-    noticePeriodDays: 0,
-    hrClearanceStatus: 'pending',
-    hrClearanceDate: null,
-    assetsReturned: false,
-    exitInterviewCompleted: false,
-    finalSettlementRequired: true,
-    createdBy: 'user-hr-002',
-    notes: 'Awaiting IT clearance and laptop return'
+    yearsOfService: 2,
+    finalSalary: 18000,
+    clearanceStatus: 'pending',
+    clearanceDate: null,
+    reason: 'Policy violation under investigation'
   },
   {
-    offboardingId: 'offboard-003',
+    _id: 'offboard-003',
     employeeId: 'emp-006',
-    terminationType: 'end_of_contract',
-    terminationDate: '2025-12-31T23:59:59.000Z',
+    offboardingType: 'end_of_contract',
+    resignationDate: '2025-12-01T00:00:00.000Z',
     lastWorkingDay: '2025-12-31T23:59:59.000Z',
-    noticePeriodDays: 0,
-    hrClearanceStatus: 'cleared',
-    hrClearanceDate: '2025-12-20T10:00:00.000Z',
-    assetsReturned: true,
-    exitInterviewCompleted: true,
-    finalSettlementRequired: true,
-    createdBy: 'user-hr-003',
-    notes: 'Contract finished successfully'
+    yearsOfService: 3,
+    finalSalary: 30000,
+    clearanceStatus: 'cleared',
+    clearanceDate: '2025-12-20T10:00:00.000Z',
+    reason: 'Project completion'
   }
 ];
 
 // Organizational Structure --------------------------------------------
-export interface OrgStructureInput {
-  employeeId: string;
-  positionId: string;
-  positionName: string;
-  jobGrade: string;
-  jobGradeLevel: number;
+export interface OrgStructureRecord {
+  _id: string;
+  positionTitle: string;
   departmentId: string;
-  departmentName: string;
-  minSalary: number;
-  maxSalary: number;
-  allowances: {
-    allowanceId: string;
-    allowanceName: string;
-    amount: number;
-    type: 'FIXED' | 'PERCENTAGE';
-    percentage?: number;
-  }[];
-  effectiveDate: string;
-  notes?: string;
+  payGrade: string;
+  baseSalary: number;
+  status: 'active' | 'draft';
 }
 
-/** Job grade information consumed for payroll setup */
-export const orgStructureInputs: OrgStructureInput[] = [
+/** Job-grade feed from Organizational Structure (REQ-PY-2) */
+export const fromOrganizationalStructure: OrgStructureRecord[] = [
   {
-    employeeId: 'emp-001',
-    positionId: 'pos-ENG-005',
-    positionName: 'Senior Software Developer',
-    jobGrade: 'JG-05',
-    jobGradeLevel: 5,
+    _id: 'pos-ENG-005',
+    positionTitle: 'Senior Software Developer',
     departmentId: 'dept-ENG',
-    departmentName: 'Engineering',
-    minSalary: 30000,
-    maxSalary: 50000,
-    allowances: [
-      { allowanceId: 'allowance-001', allowanceName: 'Transportation', amount: 2000, type: 'FIXED' },
-      { allowanceId: 'allowance-002', allowanceName: 'Communication', amount: 3000, type: 'FIXED' }
-    ],
-    effectiveDate: '2025-01-01T00:00:00.000Z',
-    notes: 'Hybrid work allowance included'
+    payGrade: 'JG-05',
+    baseSalary: 35000,
+    status: 'active'
   },
   {
-    employeeId: 'emp-002',
-    positionId: 'pos-MKT-006',
-    positionName: 'Marketing Manager',
-    jobGrade: 'JG-06',
-    jobGradeLevel: 6,
+    _id: 'pos-MKT-006',
+    positionTitle: 'Marketing Manager',
     departmentId: 'dept-MKT',
-    departmentName: 'Marketing',
-    minSalary: 25000,
-    maxSalary: 40000,
-    allowances: [
-      { allowanceId: 'allowance-003', allowanceName: 'Transportation', amount: 2000, type: 'FIXED' }
-    ],
-    effectiveDate: '2025-01-15T00:00:00.000Z',
-    notes: 'Eligible for quarterly bonus'
+    payGrade: 'JG-06',
+    baseSalary: 28000,
+    status: 'active'
   },
   {
-    employeeId: 'emp-003',
-    positionId: 'pos-SLS-006',
-    positionName: 'Sales Manager',
-    jobGrade: 'JG-06',
-    jobGradeLevel: 6,
-    departmentId: 'dept-SLS',
-    departmentName: 'Sales',
-    minSalary: 25000,
-    maxSalary: 40000,
-    allowances: [
-      { allowanceId: 'allowance-004', allowanceName: 'Transportation', amount: 2000, type: 'FIXED' },
-      { allowanceId: 'allowance-005', allowanceName: 'Sales Commission', amount: 0, type: 'PERCENTAGE', percentage: 5 }
-    ],
-    effectiveDate: '2019-07-01T00:00:00.000Z',
-    notes: 'Commission percentage varies by region'
+    _id: 'pos-PMO-003',
+    positionTitle: 'Project Controls Analyst',
+    departmentId: 'dept-PMO',
+    payGrade: 'JG-04',
+    baseSalary: 20000,
+    status: 'draft'
   }
 ];
 
 // Time Management ------------------------------------------------------
-export interface TimeManagementInput {
+export interface TimeManagementRecord {
   employeeId: string;
-  payPeriodMonth: number;
-  payPeriodYear: number;
+  period: string; // e.g., '2025-01'
   totalWorkingDays: number;
-  presentDays: number;
   absentDays: number;
-  unpaidDays: number;
-  missingHours: number;
+  lateDays: number;
   overtimeHours: number;
-  overtimeAmount: number;
   penalties: {
     unpaidDays: number;
-    missingHours: number;
-    misconductPenalties: number;
-    totalPenalties: number;
+    lateDeductions: number;
   };
-  attendanceRate: number;
-  notes?: string;
 }
 
-/** Attendance and penalty data from Time Management */
-export const timeManagementInputs: TimeManagementInput[] = [
+/** Attendance + penalty data from Time Management (BR-31, BR-35) */
+export const fromTimeManagement: TimeManagementRecord[] = [
   {
     employeeId: 'emp-001',
-    payPeriodMonth: 1,
-    payPeriodYear: 2025,
+    period: '2025-01',
     totalWorkingDays: 22,
-    presentDays: 22,
     absentDays: 0,
-    unpaidDays: 0,
-    missingHours: 0,
+    lateDays: 0,
     overtimeHours: 8,
-    overtimeAmount: 4000,
-    penalties: { unpaidDays: 0, missingHours: 0, misconductPenalties: 0, totalPenalties: 0 },
-    attendanceRate: 100,
-    notes: 'Perfect attendance'
+    penalties: { unpaidDays: 0, lateDeductions: 0 }
   },
   {
     employeeId: 'emp-002',
-    payPeriodMonth: 2,
-    payPeriodYear: 2025,
+    period: '2025-02',
     totalWorkingDays: 20,
-    presentDays: 18,
     absentDays: 2,
-    unpaidDays: 2,
-    missingHours: 4,
+    lateDays: 3,
     overtimeHours: 0,
-    overtimeAmount: 0,
-    penalties: { unpaidDays: 2, missingHours: 4, misconductPenalties: 0, totalPenalties: 2545.45 },
-    attendanceRate: 90,
-    notes: 'Two unpaid absences'
+    penalties: { unpaidDays: 2000, lateDeductions: 545.45 }
   },
   {
     employeeId: 'emp-003',
-    payPeriodMonth: 1,
-    payPeriodYear: 2025,
+    period: '2025-01',
     totalWorkingDays: 22,
-    presentDays: 15,
     absentDays: 7,
-    unpaidDays: 7,
-    missingHours: 12,
+    lateDays: 5,
     overtimeHours: 0,
-    overtimeAmount: 0,
-    penalties: { unpaidDays: 7, missingHours: 12, misconductPenalties: 500, totalPenalties: 8454.55 },
-    attendanceRate: 68,
-    notes: 'Resignation month with many absences'
+    penalties: { unpaidDays: 7000, lateDeductions: 1454.55 }
   }
 ];
 
 // Leaves ---------------------------------------------------------------
-export interface LeavesInput {
+export interface LeaveRecord {
   employeeId: string;
-  leaveYear: number;
-  totalAnnualLeaveDays: number;
-  usedLeaveDays: number;
+  period: string;
   unusedLeaveDays: number;
-  leaveEncashmentEligible: boolean;
-  dailySalaryRate: number;
-  leaveEncashmentAmount: number;
-  calculationMethod: string;
-  lastUpdated: string;
-  notes?: string;
+  encashmentEligible: boolean;
+  encashmentAmount: number;
 }
 
-/** Leave encashment data received from Leaves subsystem */
-export const leavesInputs: LeavesInput[] = [
+/** Leave encashment feed from the Leaves subsystem */
+export const fromLeaves: LeaveRecord[] = [
   {
     employeeId: 'emp-003',
-    leaveYear: 2025,
-    totalAnnualLeaveDays: 21,
-    usedLeaveDays: 1,
+    period: '2025',
     unusedLeaveDays: 20,
-    leaveEncashmentEligible: true,
-    dailySalaryRate: 600,
-    leaveEncashmentAmount: 12000,
-    calculationMethod: 'daily rate × unused days',
-    lastUpdated: '2025-01-31T00:00:00.000Z',
-    notes: 'Included in termination benefits'
+    encashmentEligible: true,
+    encashmentAmount: 12000
   },
   {
     employeeId: 'emp-001',
-    leaveYear: 2025,
-    totalAnnualLeaveDays: 21,
-    usedLeaveDays: 0,
+    period: '2025',
     unusedLeaveDays: 21,
-    leaveEncashmentEligible: false,
-    dailySalaryRate: 1166.67,
-    leaveEncashmentAmount: 0,
-    calculationMethod: 'Not eligible (active employee)',
-    lastUpdated: '2025-01-31T00:00:00.000Z',
-    notes: 'New hire'
+    encashmentEligible: false,
+    encashmentAmount: 0
   },
   {
     employeeId: 'emp-007',
-    leaveYear: 2025,
-    totalAnnualLeaveDays: 21,
-    usedLeaveDays: 15,
+    period: '2025',
     unusedLeaveDays: 6,
-    leaveEncashmentEligible: true,
-    dailySalaryRate: 800,
-    leaveEncashmentAmount: 4800,
-    calculationMethod: 'daily rate × unused days',
-    lastUpdated: '2025-02-15T00:00:00.000Z',
-    notes: 'Contract ending in March'
+    encashmentEligible: true,
+    encashmentAmount: 4800
   }
 ];
