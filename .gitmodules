@@ -1,21 +1,21 @@
 [submodule "payroll-tracking"]
-	path = payroll-tracking
-	url = https://github.com/WefhLNUE/payroll-tracking
+	path = src/payroll-tracking
+	url = https://github.com/WefhLNUE/src/payroll-tracking
 [submodule "leaves-subsystem"]
-	path = leaves-subsystem
-	url = https://github.com/WefhLNUE/leaves-subsystem
+	path = src/leaves-subsystem
+	url = https://github.com/WefhLNUE/src/leaves-subsystem
 [submodule "employee-profile-new"]
-	path = employee-profile-new
-	url = https://github.com/WefhLNUE/employee-profile-new
+	path = src/employee-profile-new
+	url = https://github.com/WefhLNUE/src/employee-profile-new
 [submodule "Time-management-system"]
-	path = Time-management-system
-	url = https://github.com/WefhLNUE/Time-management-system
+	path = src/Time-management-system
+	url = https://github.com/WefhLNUE/src/Time-management-system
 [submodule "hr-recruitment"]
-	path = hr-recruitment
-	url = https://github.com/WefhLNUE/hr-recruitment
+	path = src/hr-recruitment
+	url = https://github.com/WefhLNUE/src/hr-recruitment
 [submodule "payroll-config"]
-	path = payroll-config
-	url = https://github.com/WefhLNUE/payroll-config.git
+	path = src/payroll-config
+	url = https://github.com/WefhLNUE/src/payroll-config.git
 [submodule "Payroll-Processing-Execution-subSystem"]
-	path = Payroll-Processing-Execution-subSystem
-	url = https://github.com/WefhLNUE/Payroll-Processing-Execution-subSystem
+	path = src/Payroll-Processing-Execution-subSystem
+	url = https://github.com/WefhLNUE/src/Payroll-Processing-Execution-subSystem
