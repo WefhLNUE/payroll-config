@@ -10,9 +10,9 @@
 [submodule "Time-management-system"]
 	path = src/Time-management-system
 	url = https://github.com/WefhLNUE/src/Time-management-system
-[submodule "hr-recruitment"]
-	path = src/hr-recruitment
-	url = https://github.com/WefhLNUE/src/hr-recruitment
+[submodule "recruitment"]
+	path = src/recruitment
+	url = https://github.com/WefhLNUE/src/recruitment
 [submodule "payroll-config"]
 	path = src/payroll-config
 	url = https://github.com/WefhLNUE/src/payroll-config.git
