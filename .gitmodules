@@ -19,3 +19,9 @@
 [submodule "payroll-execution"]
 	path = src/payroll-execution
 	url = https://github.com/WefhLNUE/src/payroll-execution
+[submodule "src/performance"]
+	path = src/performance
+	url = https://github.com/WefhLNUE/performance
+[submodule "src/organization-structure"]
+	path = src/organization-structure
+	url = https://github.com/WefhLNUE/organization-structure

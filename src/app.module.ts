@@ -3,9 +3,9 @@ import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { HrRecruitmentModule } from '../hr-recruitment/hr-recruitment.module';
-import { LeavesModule } from '../leaves-subsystem/leaves/leaves.module';
-import { Employee, EmployeeSchema } from '../employee-profile-new/employee-profile/models/employee.schema';
+import { RecruitmentModule } from './recruitment/recruitment.module';
+import { LeavesModule } from './leaves/leaves.module';
+import { EmployeeProfile, EmployeeProfileSchema } from './employee-profile/models/employee-profile.schema';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
@@ -18,9 +18,9 @@ dotenv.config();
     MongooseModule.forRoot(process.env.MONGO_URI as string),
     // Register Employee schema to resolve references
     MongooseModule.forFeature([
-      { name: Employee.name, schema: EmployeeSchema },
+      { name: EmployeeProfile.name, schema: EmployeeProfileSchema },
     ]),
-    HrRecruitmentModule,
+    RecruitmentModule,
     LeavesModule,
   ],
   controllers: [AppController],
