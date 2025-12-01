@@ -1,7 +1,7 @@
 
 import { Prop, Schema, SchemaFactory, } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument } from 'mongoose';
-import {  EmployeeProfile as Employee} from '../../employee-profile/Models/employee-profile.schema';
+// import {  EmployeeProfile as Employee} from '../../employee-profile/Models/employee-profile.schema';
 import { ConfigStatus } from '../enums/payroll-configuration-enums';
 
 export type taxRulesDocument = HydratedDocument<taxRules>
@@ -19,9 +19,9 @@ export class taxRules {
     status: ConfigStatus;// draft, approved, rejected
     
 
-    @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Employee.name })
+    @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'employee-profile' })
     createdBy?: mongoose.Types.ObjectId;
-    @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Employee.name })
+    @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'employee-profile' })
     approvedBy?: mongoose.Types.ObjectId;
     @Prop({})
     approvedAt?: Date
