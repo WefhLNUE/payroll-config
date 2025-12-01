@@ -1,12 +1,29 @@
-import {
-  BadRequestException,
-  ConflictException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, BadRequestException, NotFoundException, ConflictException } from '@nestjs/common';
+
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, FilterQuery, Types } from 'mongoose';
+
+import mongoose, { Model, FilterQuery, Types } from 'mongoose';
+
 import { ConfigStatus, PolicyType } from './enums/payroll-configuration-enums';
+
+import { signingBonus } from './Models/SigningBonus.schema';
+
+import { taxRules } from './Models/taxRules.schema';
+
+import { terminationAndResignationBenefits } from './Models/terminationAndResignationBenefits';
+
+import { allowance, allowanceDocument } from './Models/allowance.schema';
+
+import {
+  CompanyWideSettings,
+  CompanyWideSettingsDocument,
+} from './Models/CompanyWideSettings.schema';
+
+import {
+  insuranceBrackets,
+  insuranceBracketsDocument,
+} from './Models/insuranceBrackets.schema';
+
 import { payType, payTypeDocument } from './Models/PayType.schema';
 import {
   CreatePayTypeDto,
@@ -25,15 +42,6 @@ import {
   payrollPoliciesDocument,
 } from './Models/payrollPolicies.schema';
 import { PayGrade, PayGradeDocument } from './Models/payGrades.schema';
-import { allowance, allowanceDocument } from './Models/allowance.schema';
-import {
-  CompanyWideSettings,
-  CompanyWideSettingsDocument,
-} from './Models/CompanyWideSettings.schema';
-import {
-  insuranceBrackets,
-  insuranceBracketsDocument,
-} from './Models/insuranceBrackets.schema';
 
 type AllowancePayload = Pick<allowance, 'name' | 'amount'> & {
   createdBy?: string;
@@ -54,21 +62,106 @@ interface UpdateStatusPayload {
 @Injectable()
 export class PayrollConfigurationService {
   constructor(
-    @InjectModel(payType.name)
-    private readonly payTypeModel: Model<payTypeDocument>,
-    @InjectModel(payrollPolicies.name)
-    private readonly payrollPoliciesModel: Model<payrollPoliciesDocument>,
-    @InjectModel(PayGrade.name)
-    private readonly payGradeModel: Model<PayGradeDocument>,
+    @InjectModel(signingBonus.name)
+    private signingBonusModel: mongoose.Model<signingBonus>,
+
+    @InjectModel(taxRules.name)
+    private taxRulesModel: mongoose.Model<taxRules>,
+
+    @InjectModel(terminationAndResignationBenefits.name)
+    private termModel: mongoose.Model<terminationAndResignationBenefits>,
+
     @InjectModel(allowance.name)
     private readonly allowanceModel: Model<allowanceDocument>,
+
     @InjectModel(CompanyWideSettings.name)
     private readonly companySettingsModel: Model<CompanyWideSettingsDocument>,
+
     @InjectModel(insuranceBrackets.name)
     private readonly insuranceModel: Model<insuranceBracketsDocument>,
-  ) {}
 
-  // #region Pay Types
+    @InjectModel(payType.name)
+    private readonly payTypeModel: Model<payTypeDocument>,
+
+    @InjectModel(payrollPolicies.name)
+    private readonly payrollPoliciesModel: Model<payrollPoliciesDocument>,
+
+    @InjectModel(PayGrade.name)
+    private readonly payGradeModel: Model<PayGradeDocument>,
+  ) { }
+
+  // ------- Signing Bonus -------
+  async createSigningBonus(dto: any) {
+    dto.status = ConfigStatus.DRAFT;
+    return this.signingBonusModel.create(dto);
+  }
+
+  async updateSigningBonus(id: string, dto: any) {
+    const doc = await this.signingBonusModel.findById(id);
+    if (!doc) throw new BadRequestException('Not found');
+    if (doc.status !== ConfigStatus.DRAFT)
+      throw new BadRequestException('Cannot edit non-draft configuration');
+
+    return this.signingBonusModel.findByIdAndUpdate(id, dto, { new: true });
+  }
+
+  async getAllSigningBonus() {
+    return this.signingBonusModel.find();
+  }
+
+  async getOneSigningBonus(id: string) {
+    return this.signingBonusModel.findById(id);
+  }
+
+  // ------- Tax Rules -------
+  async createTaxRule(dto: any) {
+    dto.status = ConfigStatus.DRAFT;
+    return this.taxRulesModel.create(dto);
+  }
+
+  async updateTaxRule(id: string, dto: any) {
+    const doc = await this.taxRulesModel.findById(id);
+    if (!doc) throw new BadRequestException('Not found');
+    if (doc.status !== ConfigStatus.DRAFT)
+      throw new BadRequestException('Cannot edit non-draft configuration');
+
+    return this.taxRulesModel.findByIdAndUpdate(id, dto, { new: true });
+  }
+
+  async getAllTaxRules() {
+    return this.taxRulesModel.find();
+  }
+
+  async getOneTaxRule(id: string) {
+    return this.taxRulesModel.findById(id);
+  }
+
+  // ------- Termination Benefits -------
+  async createTerminationBenefit(dto: any) {
+    dto.status = ConfigStatus.DRAFT;
+    return this.termModel.create(dto);
+  }
+
+  async updateTerminationBenefit(id: string, dto: any) {
+    const doc = await this.termModel.findById(id);
+    if (!doc) throw new BadRequestException('Not found');
+    if (doc.status !== ConfigStatus.DRAFT)
+      throw new BadRequestException('Cannot edit non-draft configuration');
+
+    return this.termModel.findByIdAndUpdate(id, dto, { new: true });
+  }
+
+  async getAllTerminationBenefits() {
+    return this.termModel.find();
+  }
+
+  async getOneTerminationBenefit(id: string) {
+    return this.termModel.findById(id);
+  }
+
+  /* -------------------------------------------------------------------------- */
+  /*                               Pay Types API                                */
+  /* -------------------------------------------------------------------------- */
 
   async createPayType(
     createDto: CreatePayTypeDto,
@@ -209,9 +302,9 @@ export class PayrollConfigurationService {
     return payTypeDoc.save();
   }
 
-  // #endregion
-
-  // #region Pay Grades
+  /* -------------------------------------------------------------------------- */
+  /*                               Pay Grades API                               */
+  /* -------------------------------------------------------------------------- */
 
   private validateSalaryRules(
     baseSalary: number,
@@ -372,9 +465,9 @@ export class PayrollConfigurationService {
     return payGradeDoc.save();
   }
 
-  // #endregion
-
-  // #region Payroll Policies
+  /* -------------------------------------------------------------------------- */
+  /*                            Payroll Policies API                            */
+  /* -------------------------------------------------------------------------- */
 
   private validateRuleDefinition(
     ruleDefinition: CreatePayrollPolicyDto['ruleDefinition'],
@@ -628,9 +721,9 @@ export class PayrollConfigurationService {
     return policy.save();
   }
 
-  // #endregion
-
-  // #region Allowances
+  /* -------------------------------------------------------------------------- */
+  /*                               Allowances API                               */
+  /* -------------------------------------------------------------------------- */
 
   async createAllowance(payload: AllowancePayload) {
     const created = await this.allowanceModel.create({
@@ -671,9 +764,9 @@ export class PayrollConfigurationService {
     return record.save();
   }
 
-  // #endregion
-
-  // #region Company-wide Settings
+  /* -------------------------------------------------------------------------- */
+  /*                          Company-wide settings API                         */
+  /* -------------------------------------------------------------------------- */
 
   async upsertCompanyWideSettings(payload: Partial<CompanyWideSettings>) {
     const existing = await this.companySettingsModel.findOne();
@@ -698,9 +791,9 @@ export class PayrollConfigurationService {
     return updated;
   }
 
-  // #endregion
-
-  // #region Insurance Brackets
+  /* -------------------------------------------------------------------------- */
+  /*                           Insurance brackets API                           */
+  /* -------------------------------------------------------------------------- */
 
   async createInsuranceBracket(payload: InsurancePayload) {
     this.ensureSalaryRange(payload.minSalary, payload.maxSalary);
@@ -752,9 +845,9 @@ export class PayrollConfigurationService {
     }
   }
 
-  // #endregion
-
-  // #region Validation Methods
+  /* -------------------------------------------------------------------------- */
+  /*                            Validation Methods                              */
+  /* -------------------------------------------------------------------------- */
 
   /**
    * Validates if a configuration can be deleted.
@@ -788,9 +881,9 @@ export class PayrollConfigurationService {
     }
   }
 
-  // #endregion
-
-  // #region Helper Methods (from friend's implementation)
+  /* -------------------------------------------------------------------------- */
+  /*                                  Helpers                                   */
+  /* -------------------------------------------------------------------------- */
 
   private applyStatus(
     entity: { status: ConfigStatus; approvedAt?: Date; approvedBy?: Types.ObjectId },
@@ -840,6 +933,4 @@ export class PayrollConfigurationService {
   private toObjectId(id?: string) {
     return id ? new Types.ObjectId(id) : undefined;
   }
-
-  // #endregion
 }

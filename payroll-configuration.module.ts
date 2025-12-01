@@ -1,28 +1,20 @@
 import { Module } from '@nestjs/common';
-
-import { PayrollConfigurationController } from './payroll-configuration.controller';
-
-import { PayrollConfigurationService } from './payroll-configuration.service';
-
-import { CompanyWideSettings, CompanyWideSettingsSchema } from './Models/CompanyWideSettings.schema';
-
 import { MongooseModule } from '@nestjs/mongoose';
 
+import { PayrollConfigurationController } from './payroll-configuration.controller';
+import { PayrollConfigurationService } from './payroll-configuration.service';
+
+// Schemas (from your payrollModels folder)
 import { allowance, allowanceSchema } from './Models/allowance.schema';
-
-import { insuranceBrackets, insuranceBracketsSchema } from './Models/insuranceBrackets.schema';
-
-import { payrollPolicies, payrollPoliciesSchema } from './Models/payrollPolicies.schema';
-
-import { payType, payTypeSchema } from './Models/PayType.schema';
-
 import { signingBonus, signingBonusSchema } from './Models/SigningBonus.schema';
-
 import { taxRules, taxRulesSchema } from './Models/taxRules.schema';
-
+import { insuranceBrackets, insuranceBracketsSchema } from './Models/insuranceBrackets.schema';
+import { payType, payTypeSchema } from './Models/PayType.schema';
+import { payrollPolicies, payrollPoliciesSchema } from './Models/payrollPolicies.schema';
 import { terminationAndResignationBenefits, terminationAndResignationBenefitsSchema } from './Models/terminationAndResignationBenefits';
-
+import { CompanyWideSettings, CompanyWideSettingsSchema } from './Models/CompanyWideSettings.schema';
 import { PayGrade, PayGradeSchema } from './Models/payGrades.schema';
+
 
 @Module({
   imports: [
@@ -35,11 +27,11 @@ import { PayGrade, PayGradeSchema } from './Models/payGrades.schema';
       { name: payrollPolicies.name, schema: payrollPoliciesSchema },
       { name: terminationAndResignationBenefits.name, schema: terminationAndResignationBenefitsSchema },
       { name: CompanyWideSettings.name, schema: CompanyWideSettingsSchema },
-      { name: PayGrade.name, schema: PayGradeSchema }
+      { name: PayGrade.name, schema: PayGradeSchema },
     ]),
   ],
   controllers: [PayrollConfigurationController],
   providers: [PayrollConfigurationService],
-  exports:[PayrollConfigurationService]
+  exports: [PayrollConfigurationService],
 })
 export class PayrollConfigurationModule { }
