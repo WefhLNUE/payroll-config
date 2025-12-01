@@ -70,7 +70,7 @@ describe('PayrollConfigurationController', () => {
     );
     service = module.get<PayrollConfigurationService>(
       PayrollConfigurationService,
-    );
+    ) as unknown as ReturnType<typeof mockService>;
   });
 
   describe('allowances', () => {
