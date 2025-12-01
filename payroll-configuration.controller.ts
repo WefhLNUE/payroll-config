@@ -10,7 +10,7 @@ export class PayrollConfigurationController {
     createSigningBonus(@Body() dto: any) {
         return this.service.createSigningBonus(dto);
     }
-
+    
     @Patch('signing-bonus/:id')
     updateSigningBonus(@Param('id') id: string, @Body() dto: any) {
         return this.service.updateSigningBonus(id, dto);
