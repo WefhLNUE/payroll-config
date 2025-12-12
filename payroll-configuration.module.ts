@@ -13,7 +13,7 @@ import { payType, payTypeSchema } from './Models/PayType.schema';
 import { payrollPolicies, payrollPoliciesSchema } from './Models/payrollPolicies.schema';
 import { terminationAndResignationBenefits, terminationAndResignationBenefitsSchema } from './Models/terminationAndResignationBenefits';
 import { CompanyWideSettings, CompanyWideSettingsSchema } from './Models/CompanyWideSettings.schema';
-import { PayGrade, PayGradeSchema } from './Models/payGrades.schema';
+import { payGrade, payGradeSchema } from './Models/payGrades.schema';
 
 
 @Module({
@@ -27,7 +27,7 @@ import { PayGrade, PayGradeSchema } from './Models/payGrades.schema';
       { name: payrollPolicies.name, schema: payrollPoliciesSchema },
       { name: terminationAndResignationBenefits.name, schema: terminationAndResignationBenefitsSchema },
       { name: CompanyWideSettings.name, schema: CompanyWideSettingsSchema },
-      { name: PayGrade.name, schema: PayGradeSchema },
+      { name: payGrade.name, schema: payGradeSchema },
     ]),
   ],
   controllers: [PayrollConfigurationController],
