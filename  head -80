@@ -1,0 +1,26 @@
+warning: in the working copy of 'Models/PayType.schema.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Models/allowance.schema.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Models/taxRules.schema.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Models/terminationAndResignationBenefits.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'dto/pay-grade/pay-grade-response.dto.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'dto/pay-grade/update-pay-grade.dto.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'dto/pay-type/index.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'dto/pay-type/update-pay-type.dto.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'dto/payroll-policy/index.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'enums/payroll-configuration-enums.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'payroll-configuration.controller.spec.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'payroll-configuration.controller.ts', LF will be replaced by CRLF the next time Git touches it
+ Models/CompanyWideSettings.schema.ts        |  21 [32m+++[m[31m---[m
+ Models/PayType.schema.ts                    |  41 [32m+++++++++++[m
+ Models/SigningBonus.schema.ts               |  30 [32m+++++++++[m
+ Models/allowance.schema.ts                  |  46 [32m++++++[m[31m-------[m
+ Models/payGrades.schema.ts                  |  51 [32m++++++++[m[31m------[m
+ Models/payrollPolicies.schema.ts            | 101 [32m+++++++++++++++[m[31m-------------[m
+ Models/taxRules.schema.ts                   |  50 [32m+++++++[m[31m-------[m
+ Models/terminationAndResignationBenefits.ts |  49 [32m+++++++[m[31m-------[m
+ dto/pay-grade/pay-grade-response.dto.ts     |   2 [31m-[m
+ dto/pay-grade/update-pay-grade.dto.ts       |   1 [31m-[m
+ dto/pay-type/index.ts                       |   1 [31m-[m
+ dto/pay-type/update-pay-type.dto.ts         |   3 [31m-[m
+ dto/payroll-policy/index.ts                 |   2 [31m-[m
+ 13 files changed, 237 insertions(+), 161 deletions(-)

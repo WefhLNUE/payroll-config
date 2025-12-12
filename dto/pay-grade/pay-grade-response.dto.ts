@@ -60,6 +60,4 @@ export class PayGradeResponseDto implements CreatePayGradeDto {
   @IsString()
   approvedAt?: string;
 }
-
-
 // FILE 11: Placeholder - Waiting for content
