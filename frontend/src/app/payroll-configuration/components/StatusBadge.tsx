@@ -7,7 +7,7 @@ interface StatusBadgeProps {
 
 export function StatusBadge({ status, size = 'md' }: StatusBadgeProps) {
   const baseStyles = 'font-semibold rounded-full';
-  
+
   const sizeStyles = {
     sm: 'px-2 py-1 text-xs',
     md: 'px-3 py-1 text-sm',
@@ -27,7 +27,7 @@ export function StatusBadge({ status, size = 'md' }: StatusBadgeProps) {
   } as const;
 
   const typedStatus = status as 'draft' | 'approved' | 'rejected';
-  
+
   return (
     <span className={`${baseStyles} ${sizeStyles[size as 'sm' | 'md' | 'lg']} ${statusStyles[typedStatus]}`}>
       {statusLabels[typedStatus]}

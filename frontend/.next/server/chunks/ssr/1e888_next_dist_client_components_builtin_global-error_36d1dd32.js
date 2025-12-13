@@ -1,0 +1,3 @@
+module.exports=[37030,(a,b,c)=>{let{createClientModuleProxy:d}=a.r(95793);a.n(d("[project]/OneDrive/Desktop/MSS3 NEWW/payroll-configuration/frontend/node_modules/next/dist/client/components/builtin/global-error.js <module evaluation>"))},9363,(a,b,c)=>{let{createClientModuleProxy:d}=a.r(95793);a.n(d("[project]/OneDrive/Desktop/MSS3 NEWW/payroll-configuration/frontend/node_modules/next/dist/client/components/builtin/global-error.js"))},30512,a=>{"use strict";a.i(37030);var b=a.i(9363);a.n(b)}];
+
+//# sourceMappingURL=1e888_next_dist_client_components_builtin_global-error_36d1dd32.js.map

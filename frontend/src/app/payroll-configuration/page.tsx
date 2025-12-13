@@ -1,6 +1,8 @@
 'use client';
 
 import { useState } from 'react';
+
+// Person A
 import PayrollPolicies from './components/PayrollPolicies';
 import PayGrades from './components/PayGrades';
 import PayTypes from './components/PayTypes';
@@ -8,7 +10,19 @@ import Allowances from './components/Allowances';
 import SigningBonuses from './components/SigningBonuses';
 import TerminationBenefits from './components/TerminationBenefits';
 
-type TabType = 'policies' | 'grades' | 'types' | 'allowances' | 'bonuses' | 'termination';
+// Person B
+import InsuranceBrackets from './components/InsuranceBrackets';
+import TaxRules from './components/TaxRules';
+
+type TabType =
+  | 'policies'
+  | 'grades'
+  | 'types'
+  | 'allowances'
+  | 'bonuses'
+  | 'termination'
+  | 'insurance'
+  | 'tax';
 
 export default function PayrollConfiguration() {
   const [activeTab, setActiveTab] = useState<TabType>('policies');
@@ -20,14 +34,22 @@ export default function PayrollConfiguration() {
     { id: 'allowances', label: 'Allowances', icon: '➕' },
     { id: 'bonuses', label: 'Signing Bonuses', icon: '🎁' },
     { id: 'termination', label: 'Termination Benefits', icon: '🚪' },
+
+    // 👤 Person B
+    { id: 'tax', label: 'Tax Rules', icon: '🧾' },
+    { id: 'insurance', label: 'Insurance Brackets', icon: '🏥' },
   ];
 
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">Payroll Configuration</h1>
-          <p className="text-gray-600">Manage payroll policies, pay grades, and compensation structures</p>
+          <h1 className="text-4xl font-bold text-gray-900 mb-2">
+            Payroll Configuration
+          </h1>
+          <p className="text-gray-600">
+            Manage payroll policies, pay grades, and compensation structures
+          </p>
         </div>
 
         {/* Tab Navigation */}
@@ -36,11 +58,10 @@ export default function PayrollConfiguration() {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`px-4 py-3 font-medium transition-colors whitespace-nowrap ${
-                activeTab === tab.id
+              className={`px-4 py-3 font-medium transition-colors whitespace-nowrap ${activeTab === tab.id
                   ? 'text-blue-600 border-b-2 border-blue-600'
                   : 'text-gray-600 hover:text-gray-900'
-              }`}
+                }`}
             >
               <span className="mr-2">{tab.icon}</span>
               {tab.label}
@@ -56,6 +77,10 @@ export default function PayrollConfiguration() {
           {activeTab === 'allowances' && <Allowances />}
           {activeTab === 'bonuses' && <SigningBonuses />}
           {activeTab === 'termination' && <TerminationBenefits />}
+
+          {/* 👤 Person B */}
+          {activeTab === 'tax' && <TaxRules />}
+          {activeTab === 'insurance' && <InsuranceBrackets />}
         </div>
       </div>
     </div>
