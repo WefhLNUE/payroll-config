@@ -1,0 +1,54 @@
+[submodule "backend/src/performance"]
+	path = backend/src/performance
+	url = https://github.com/WefhLNUE/performance
+[submodule "backend/src/organization-structure"]
+	path = backend/src/organization-structure
+	url = https://github.com/WefhLNUE/organization-structure
+[submodule "backend/src/payroll-tracking"]
+	path = backend/src/payroll-tracking
+	url = https://github.com/WefhLNUE/payroll-tracking
+[submodule "backend/src/leaves"]
+	path = backend/src/leaves
+	url = https://github.com/WefhLNUE/leaves
+[submodule "backend/src/employee-profile"]
+	path = backend/src/employee-profile
+	url = https://github.com/WefhLNUE/employee-profile
+[submodule "backend/src/time-management"]
+	path = backend/src/time-management
+	url = https://github.com/WefhLNUE/time-management
+[submodule "backend/src/recruitment"]
+	path = backend/src/recruitment
+	url = https://github.com/WefhLNUE/recruitment
+[submodule "backend/src/payroll-configuration"]
+	path = backend/src/payroll-configuration
+	url = https://github.com/WefhLNUE/payroll-configuration
+[submodule "backend/src/payroll-execution"]
+	path = backend/src/payroll-execution
+	url = https://github.com/WefhLNUE/payroll-execution
+[submodule "frontend/src/app/performance"]
+	path = frontend/src/app/performance
+	url = https://github.com/WefhLNUE/performance-frontend
+[submodule "frontend/src/app/payroll-tracking"]
+	path = frontend/src/app/payroll-tracking
+	url = https://github.com/WefhLNUE/payroll-tracking-frontend
+[submodule "frontend/src/app/leaves"]
+	path = frontend/src/app/leaves
+	url = https://github.com/WefhLNUE/leaves-frontend
+[submodule "frontend/src/app/employee-profile"]
+	path = frontend/src/app/employee-profile
+	url = https://github.com/WefhLNUE/employee-profile-frontend
+[submodule "frontend/src/app/time-management"]
+	path = frontend/src/app/time-management
+	url = https://github.com/WefhLNUE/time-management-frontend
+[submodule "frontend/src/app/recruitment"]
+	path = frontend/src/app/recruitment
+	url = https://github.com/WefhLNUE/recruitment-frontend
+[submodule "frontend/src/app/payroll-configuration"]
+	path = frontend/src/app/payroll-configuration
+	url = https://github.com/WefhLNUE/payroll-configuration-frontend
+[submodule "frontend/src/app/payroll-execution"]
+	path = frontend/src/app/payroll-execution
+	url = https://github.com/WefhLNUE/payroll-execution-frontend
+[submodule "frontend/src/app/organization-structure"]
+	path = frontend/src/app/organization-structure
+	url = https://github.com/WefhLNUE/organization-structure-frontend
