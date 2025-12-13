@@ -1,0 +1,11 @@
+var R=require("../../chunks/ssr/[turbopack]_runtime.js")("server/app/_global-error/page.js")
+R.c("server/chunks/ssr/[root-of-the-server]__38e3468d._.js")
+R.c("server/chunks/ssr/OneDrive_Desktop_MSS3 NEWW_payroll-configuration_frontend_5c5f7379._.js")
+R.c("server/chunks/ssr/1e888_next_dist_04b3d448._.js")
+R.c("server/chunks/ssr/[root-of-the-server]__7226f5cb._.js")
+R.c("server/chunks/ssr/[root-of-the-server]__4e016443._.js")
+R.c("server/chunks/ssr/1e888_next_dist_1889cab8._.js")
+R.c("server/chunks/ssr/OneDrive_Desktop_MSS3 NEWW_payroll-configuration_frontend_src_app_ca9ad07f._.js")
+R.c("server/chunks/ssr/aeedc_frontend__next-internal_server_app__global-error_page_actions_c1e89c2e.js")
+R.m(94005)
+module.exports=R.m(94005).exports
