@@ -1,0 +1,31 @@
+# Dependencies
+node_modules/
+dist/
+build/
+coverage/
+
+# Logs
+*.log
+
+# Environment
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
+
+# Test files (often have intentional any types)
+*.spec.ts
+*.test.ts
+test/
+
+# Generated files
+*.d.ts
+*.js.map
+
+# Config files
+eslint.config.mjs
+*.config.js
+*.config.ts
+
