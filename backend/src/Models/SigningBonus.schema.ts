@@ -1,6 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument } from 'mongoose';
-import { EmployeeProfile as Employee } from '../../employee-profile/Models/employee-profile.schema';
 import { ConfigStatus } from '../enums/payroll-configuration-enums';
 
 export type signingBonusDocument = HydratedDocument<signingBonus>;
@@ -19,9 +18,9 @@ export class signingBonus {
   })
   status: ConfigStatus;
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Employee.name })
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'EmployeeProfile' })
   createdBy?: mongoose.Types.ObjectId;
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Employee.name })
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'EmployeeProfile' })
   approvedBy?: mongoose.Types.ObjectId;
   @Prop({})
   approvedAt?: Date;

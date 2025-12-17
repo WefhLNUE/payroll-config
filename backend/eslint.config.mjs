@@ -27,6 +27,7 @@ export default tseslint.config(
   },
   {
     rules: {
+      // Disable all formatting-related rules
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-floating-promises': 'off',
       '@typescript-eslint/no-unsafe-argument': 'off',
@@ -38,6 +39,28 @@ export default tseslint.config(
       '@typescript-eslint/require-await': 'off',
       '@typescript-eslint/no-misused-promises': 'off',
       'prettier/prettier': 'off',
+      // Disable all formatting rules
+      'indent': 'off',
+      'linebreak-style': 'off',
+      'quotes': 'off',
+      'semi': 'off',
+      'comma-dangle': 'off',
+      'object-curly-spacing': 'off',
+      'array-bracket-spacing': 'off',
+      'comma-spacing': 'off',
+      'key-spacing': 'off',
+      'space-before-blocks': 'off',
+      'space-before-function-paren': 'off',
+      'space-in-parens': 'off',
+      'space-infix-ops': 'off',
+      'space-unary-ops': 'off',
+      'spaced-comment': 'off',
+      'brace-style': 'off',
+      'eol-last': 'off',
+      'no-trailing-spaces': 'off',
+      'padded-blocks': 'off',
+      'no-multiple-empty-lines': 'off',
+      'max-len': 'off',
     },
   },
 );

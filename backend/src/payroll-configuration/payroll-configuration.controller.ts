@@ -50,6 +50,9 @@ interface CompanySettingsDto {
   payDate: Date;
   timeZone: string;
   currency?: string;
+  backupFrequency?: string;
+  backupLocation?: string;
+  retentionPeriod?: number;
 }
 
 interface CreateInsuranceDto {
