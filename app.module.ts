@@ -6,7 +6,7 @@ import { AppService } from './app.service';
 // import { RecruitmentModule } from './recruitment/recruitment.module';
 // import { LeavesModule } from './leaves/leaves.module';
 // import { AuthModule } from './auth/auth.module';
-import { PayrollConfigurationModule } from './payroll-configuration/payroll-configuration.module';
+import { PayrollConfigurationModule } from './payroll-configuration.module';
 // import { EmployeeProfile, EmployeeProfileSchema } from './employee-profile/Models/employee-profile.schema';
 import * as dotenv from 'dotenv';
 dotenv.config();
@@ -30,4 +30,4 @@ dotenv.config();
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }
