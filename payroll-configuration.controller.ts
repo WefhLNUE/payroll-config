@@ -30,38 +30,16 @@ import {
 import {
   ApproveConfigDto,
   RejectConfigDto,
+  ApprovalDto,
 } from './dto/approval.dto';
+import { CreateAllowanceDto, UpdateAllowanceDto } from './dto/allowance';
+import { CreateSigningBonusDto, UpdateSigningBonusDto } from './dto/signing-bonus';
+import { CreateTaxRuleDto, UpdateTaxRuleDto } from './dto/tax-rule';
+import { CreateTerminationBenefitDto, UpdateTerminationBenefitDto } from './dto/termination-benefit';
+import { CreateInsuranceBracketDto, UpdateInsuranceBracketDto } from './dto/insurance-bracket';
+import { CompanyWideSettingsDto } from './dto/company-settings';
 
-interface CreateAllowanceDto {
-  name: string;
-  amount: number;
-  createdBy?: string;
-}
 
-interface UpdateAllowanceDto extends Partial<CreateAllowanceDto> { }
-
-interface ApprovalDto {
-  status: ConfigStatus.APPROVED | ConfigStatus.REJECTED;
-  approverId?: string;
-}
-
-interface CompanySettingsDto {
-  payDate: Date;
-  timeZone: string;
-  currency?: string;
-}
-
-interface CreateInsuranceDto {
-  name: string;
-  amount: number;
-  minSalary: number;
-  maxSalary: number;
-  employeeRate: number;
-  employerRate: number;
-  createdBy?: string;
-}
-
-interface UpdateInsuranceDto extends Partial<CreateInsuranceDto> { }
 
 @Controller('payroll-configuration')
 export class PayrollConfigurationController {
@@ -79,12 +57,12 @@ export class PayrollConfigurationController {
   /* -------------------------------------------------------------------------- */
 
   @Post('signing-bonus')
-  createSigningBonus(@Body() dto: any) {
+  createSigningBonus(@Body() dto: CreateSigningBonusDto) {
     return this.payrollConfigurationService.createSigningBonus(dto);
   }
 
   @Patch('signing-bonus/:id')
-  updateSigningBonus(@Param('id') id: string, @Body() dto: any) {
+  updateSigningBonus(@Param('id') id: string, @Body() dto: UpdateSigningBonusDto) {
     return this.payrollConfigurationService.updateSigningBonus(id, dto);
   }
 
@@ -119,12 +97,12 @@ export class PayrollConfigurationController {
   /* -------------------------------------------------------------------------- */
 
   @Post('tax-rule')
-  createTaxRule(@Body() dto: any) {
+  createTaxRule(@Body() dto: CreateTaxRuleDto) {
     return this.payrollConfigurationService.createTaxRule(dto);
   }
 
   @Patch('tax-rule/:id')
-  updateTaxRule(@Param('id') id: string, @Body() dto: any) {
+  updateTaxRule(@Param('id') id: string, @Body() dto: UpdateTaxRuleDto) {
     return this.payrollConfigurationService.updateTaxRule(id, dto);
   }
 
@@ -159,12 +137,12 @@ export class PayrollConfigurationController {
   /* -------------------------------------------------------------------------- */
 
   @Post('termination-benefit')
-  createTerminationBenefit(@Body() dto: any) {
+  createTerminationBenefit(@Body() dto: CreateTerminationBenefitDto) {
     return this.payrollConfigurationService.createTerminationBenefit(dto);
   }
 
   @Patch('termination-benefit/:id')
-  updateTerminationBenefit(@Param('id') id: string, @Body() dto: any) {
+  updateTerminationBenefit(@Param('id') id: string, @Body() dto: UpdateTerminationBenefitDto) {
     return this.payrollConfigurationService.updateTerminationBenefit(id, dto);
   }
 
@@ -426,7 +404,7 @@ export class PayrollConfigurationController {
   /* -------------------------------------------------------------------------- */
 
   @Post('company-settings')
-  upsertCompanySettings(@Body() body: CompanySettingsDto) {
+  upsertCompanySettings(@Body() body: CompanyWideSettingsDto) {
     return this.payrollConfigurationService.upsertCompanyWideSettings(body);
   }
 
@@ -448,7 +426,7 @@ export class PayrollConfigurationController {
   @Patch('company-settings/:id')
   updateCompanySettings(
     @Param('id') id: string,
-    @Body() body: CompanySettingsDto,
+    @Body() body: CompanyWideSettingsDto,
   ) {
     return this.payrollConfigurationService.updateCompanyWideSettings(
       id,
@@ -461,7 +439,7 @@ export class PayrollConfigurationController {
   /* -------------------------------------------------------------------------- */
 
   @Post('insurance-brackets')
-  createInsurance(@Body() body: CreateInsuranceDto) {
+  createInsurance(@Body() body: CreateInsuranceBracketDto) {
     return this.payrollConfigurationService.createInsuranceBracket(body);
   }
 
@@ -478,7 +456,7 @@ export class PayrollConfigurationController {
   @Patch('insurance-brackets/:id')
   updateInsurance(
     @Param('id') id: string,
-    @Body() body: UpdateInsuranceDto,
+    @Body() body: UpdateInsuranceBracketDto,
   ) {
     return this.payrollConfigurationService.updateInsuranceBracket(
       id,

@@ -28,6 +28,13 @@ import {
   CreatePayGradeDto,
   UpdatePayGradeDto,
 } from './dto/pay-grade';
+import { CreateAllowanceDto, UpdateAllowanceDto } from './dto/allowance';
+import { CreateSigningBonusDto, UpdateSigningBonusDto } from './dto/signing-bonus';
+import { CreateTaxRuleDto, UpdateTaxRuleDto } from './dto/tax-rule';
+import { CreateTerminationBenefitDto, UpdateTerminationBenefitDto } from './dto/termination-benefit';
+import { CreateInsuranceBracketDto, UpdateInsuranceBracketDto } from './dto/insurance-bracket';
+import { CompanyWideSettingsDto } from './dto/company-settings';
+import { ApprovalDto } from './dto/approval.dto';
 import {
   payrollPolicies,
   payrollPoliciesDocument,
@@ -36,13 +43,15 @@ import { payGrade, payGradeDocument } from './Models/payGrades.schema';
 
 type AllowancePayload = Pick<allowance, 'name' | 'amount'> & {
   createdBy?: string;
+  status?: ConfigStatus;
 };
 
 type InsurancePayload = Pick<
   insuranceBrackets,
-  'name' | 'amount' | 'minSalary' | 'maxSalary' | 'employeeRate' | 'employerRate'
+  'name' | 'minSalary' | 'maxSalary' | 'employeeRate' | 'employerRate'
 > & {
   createdBy?: string;
+  status?: ConfigStatus;
 };
 
 interface UpdateStatusPayload {
@@ -85,8 +94,6 @@ export class PayrollConfigurationService {
   async createSigningBonus(dto: any) {
     try {
       dto.status = dto.status || ConfigStatus.DRAFT;
-      // Sync positionName with name to satisfy stale unique indexes in the DB
-      dto.positionName = dto.name;
       return await this.signingBonusModel.create(dto);
     } catch (error) {
       console.error('Error creating signing bonus:', error);
@@ -99,9 +106,7 @@ export class PayrollConfigurationService {
       const doc = await this.signingBonusModel.findById(id).exec();
       if (!doc) throw new NotFoundException('Signing bonus not found');
 
-      if (dto.name) {
-        dto.positionName = dto.name;
-      }
+
 
       return await this.signingBonusModel.findByIdAndUpdate(id, dto, { new: true }).exec();
     } catch (error) {
@@ -926,7 +931,7 @@ export class PayrollConfigurationService {
   /*                          Company-wide settings API                         */
   /* -------------------------------------------------------------------------- */
 
-  async upsertCompanyWideSettings(payload: Partial<CompanyWideSettings>) {
+  async upsertCompanyWideSettings(payload: CompanyWideSettingsDto) {
     const existing = await this.companySettingsModel.findOne();
     if (existing) {
       existing.set(payload);
@@ -965,7 +970,7 @@ export class PayrollConfigurationService {
     ).exec();
   }
 
-  async updateCompanyWideSettings(id: string, payload: Partial<CompanyWideSettings>) {
+  async updateCompanyWideSettings(id: string, payload: CompanyWideSettingsDto) {
     const updated = await this.companySettingsModel
       .findByIdAndUpdate(id, payload, { new: true, runValidators: true })
       .exec();
@@ -985,7 +990,7 @@ export class PayrollConfigurationService {
       this.ensureSalaryRange(payload.minSalary, payload.maxSalary);
       const created = await this.insuranceModel.create({
         ...payload,
-        amount: payload.amount ?? 0,
+
         createdBy: this.toObjectId(payload.createdBy),
         status: payload.status || ConfigStatus.DRAFT,
       });

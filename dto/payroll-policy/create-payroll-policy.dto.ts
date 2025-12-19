@@ -17,6 +17,7 @@ import {
 import {
   PolicyType,
   Applicability,
+  ConfigStatus,
 } from '../../enums/payroll-configuration-enums';
 
 @ValidatorConstraint({ name: 'atLeastOneField', async: false })
@@ -80,4 +81,8 @@ export class CreatePayrollPolicyDto {
   @IsEnum(Applicability)
   @IsNotEmpty()
   applicability: Applicability;
+
+  @IsOptional()
+  @IsEnum(ConfigStatus)
+  status?: ConfigStatus;
 }

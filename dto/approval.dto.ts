@@ -1,4 +1,5 @@
-import { IsString, IsNotEmpty } from 'class-validator';
+import { IsString, IsNotEmpty, IsOptional, IsEnum } from 'class-validator';
+import { ConfigStatus } from '../enums/payroll-configuration-enums';
 
 export class ApproveConfigDto {
   @IsString()
@@ -15,5 +16,16 @@ export class RejectConfigDto {
   @IsNotEmpty()
   reason: string;
 }
+
+export class ApprovalDto {
+  @IsEnum(ConfigStatus)
+  @IsNotEmpty()
+  status: ConfigStatus;
+
+  @IsOptional()
+  @IsString()
+  approverId?: string;
+}
+
 
 // FILE 4: Placeholder - Waiting for content
