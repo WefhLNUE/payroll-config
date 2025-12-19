@@ -84,7 +84,7 @@ export class PayrollConfigurationService {
   // ------- Signing Bonus -------
   async createSigningBonus(dto: any) {
     try {
-      dto.status = ConfigStatus.DRAFT;
+      dto.status = dto.status || ConfigStatus.DRAFT;
       // Sync positionName with name to satisfy stale unique indexes in the DB
       dto.positionName = dto.name;
       return await this.signingBonusModel.create(dto);
@@ -149,7 +149,7 @@ export class PayrollConfigurationService {
   // ------- Tax Rules -------
   async createTaxRule(dto: any) {
     try {
-      dto.status = ConfigStatus.DRAFT;
+      dto.status = dto.status || ConfigStatus.DRAFT;
       return await this.taxRulesModel.create(dto);
     } catch (error) {
       console.error('Error creating tax rule:', error);
@@ -206,10 +206,13 @@ export class PayrollConfigurationService {
 
   async deleteTaxRule(id: string): Promise<void> {
     try {
-      const result = await this.taxRulesModel.findByIdAndDelete(id).exec();
+      const objId = this.toObjectId(id.trim());
+      console.log(`Attempting to delete Tax Rule with ID: ${objId}`);
+      const result = await this.taxRulesModel.findByIdAndDelete(objId).exec();
       if (!result) {
         throw new NotFoundException('Tax rule not found');
       }
+      console.log(`Successfully deleted Tax Rule: ${result._id}`);
     } catch (error) {
       console.error('Error deleting tax rule:', error);
       throw error;
@@ -219,7 +222,7 @@ export class PayrollConfigurationService {
   // ------- Termination Benefits -------
   async createTerminationBenefit(dto: any) {
     try {
-      dto.status = ConfigStatus.DRAFT;
+      dto.status = dto.status || ConfigStatus.DRAFT;
       return await this.termModel.create(dto);
     } catch (error) {
       console.error('Error creating termination benefit:', error);
@@ -271,11 +274,11 @@ export class PayrollConfigurationService {
 
   async deleteTerminationBenefit(id: string): Promise<void> {
     try {
-      const trimmedId = id.trim();
-      console.log(`Attempting to delete Termination Benefit with ID: ${trimmedId}`);
-      const result = await this.termModel.findByIdAndDelete(trimmedId).exec();
+      const objId = this.toObjectId(id.trim());
+      console.log(`Attempting to delete Termination Benefit with ID: ${objId}`);
+      const result = await this.termModel.findByIdAndDelete(objId).exec();
       if (!result) {
-        console.warn(`Termination Benefit with ID ${trimmedId} not found for deletion`);
+        console.warn(`Termination Benefit with ID ${objId} not found for deletion`);
         throw new NotFoundException('Termination benefit not found');
       }
       console.log(`Successfully deleted Termination Benefit: ${result._id}`);
@@ -287,11 +290,11 @@ export class PayrollConfigurationService {
 
   async deleteSigningBonus(id: string): Promise<void> {
     try {
-      const trimmedId = id.trim();
-      console.log(`Attempting to delete Signing Bonus with ID: ${trimmedId}`);
-      const result = await this.signingBonusModel.findByIdAndDelete(trimmedId).exec();
+      const objId = this.toObjectId(id.trim());
+      console.log(`Attempting to delete Signing Bonus with ID: ${objId}`);
+      const result = await this.signingBonusModel.findByIdAndDelete(objId).exec();
       if (!result) {
-        console.warn(`Signing Bonus with ID ${trimmedId} not found for deletion`);
+        console.warn(`Signing Bonus with ID ${objId} not found for deletion`);
         throw new NotFoundException('Signing bonus not found');
       }
       console.log(`Successfully deleted Signing Bonus: ${result._id}`);
@@ -329,7 +332,7 @@ export class PayrollConfigurationService {
 
       const created = await this.payTypeModel.create({
         ...createDto,
-        status: ConfigStatus.DRAFT,
+        status: createDto.status || ConfigStatus.DRAFT,
       });
       console.log(`Successfully created Pay Type: ${created._id}`);
       return created;
@@ -490,7 +493,7 @@ export class PayrollConfigurationService {
 
       const created = await this.payGradeModel.create({
         ...createDto,
-        status: ConfigStatus.DRAFT,
+        status: createDto.status || ConfigStatus.DRAFT,
       });
       console.log(`Successfully created Pay Grade: ${created._id}`);
       return created;
@@ -716,7 +719,7 @@ export class PayrollConfigurationService {
       const created = await this.payrollPoliciesModel.create({
         ...createDto,
         effectiveDate: new Date(createDto.effectiveDate),
-        status: ConfigStatus.DRAFT,
+        status: createDto.status || ConfigStatus.DRAFT,
       });
       console.log(`Successfully created Payroll Policy: ${created._id}`);
       return created;
@@ -867,7 +870,7 @@ export class PayrollConfigurationService {
       const created = await this.allowanceModel.create({
         ...payload,
         createdBy: this.toObjectId(payload.createdBy),
-        status: ConfigStatus.DRAFT,
+        status: payload.status || ConfigStatus.DRAFT,
       });
       console.log(`Successfully created Allowance: ${created._id}`);
       return created.toObject();
@@ -905,11 +908,11 @@ export class PayrollConfigurationService {
 
   async deleteAllowance(id: string): Promise<void> {
     try {
-      const trimmedId = id.trim();
-      console.log(`Attempting to delete Allowance with ID: ${trimmedId}`);
-      const result = await this.allowanceModel.findByIdAndDelete(trimmedId).exec();
+      const objId = this.toObjectId(id.trim());
+      console.log(`Attempting to delete Allowance with ID: ${objId}`);
+      const result = await this.allowanceModel.findByIdAndDelete(objId).exec();
       if (!result) {
-        console.warn(`Allowance with ID ${trimmedId} not found for deletion`);
+        console.warn(`Allowance with ID ${objId} not found for deletion`);
         throw new NotFoundException('Allowance not found');
       }
       console.log(`Successfully deleted Allowance: ${result._id}`);
@@ -984,7 +987,7 @@ export class PayrollConfigurationService {
         ...payload,
         amount: payload.amount ?? 0,
         createdBy: this.toObjectId(payload.createdBy),
-        status: ConfigStatus.DRAFT,
+        status: payload.status || ConfigStatus.DRAFT,
       });
       console.log(`Successfully created Insurance Bracket: ${created._id}`);
       return created.toObject();
@@ -1036,9 +1039,18 @@ export class PayrollConfigurationService {
   }
 
   async deleteInsuranceBracket(id: string) {
-    const result = await this.insuranceModel.findByIdAndDelete(id).exec();
-    if (!result) {
-      throw new NotFoundException('Insurance bracket not found');
+    try {
+      const objId = this.toObjectId(id.trim());
+      console.log(`Attempting to delete Insurance Bracket with ID: ${objId}`);
+      const result = await this.insuranceModel.findByIdAndDelete(objId).exec();
+      if (!result) {
+        console.warn(`Insurance Bracket with ID ${objId} not found for deletion`);
+        throw new NotFoundException('Insurance bracket not found');
+      }
+      console.log(`Successfully deleted Insurance Bracket: ${result._id}`);
+    } catch (error) {
+      console.error('Error deleting insurance bracket:', error);
+      throw error;
     }
   }
 
