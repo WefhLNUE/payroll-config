@@ -83,89 +83,222 @@ export class PayrollConfigurationService {
 
   // ------- Signing Bonus -------
   async createSigningBonus(dto: any) {
-    dto.status = ConfigStatus.DRAFT;
-    return this.signingBonusModel.create(dto);
+    try {
+      dto.status = ConfigStatus.DRAFT;
+      // Sync positionName with name to satisfy stale unique indexes in the DB
+      dto.positionName = dto.name;
+      return await this.signingBonusModel.create(dto);
+    } catch (error) {
+      console.error('Error creating signing bonus:', error);
+      throw new BadRequestException(error.message || 'Failed to create signing bonus');
+    }
   }
 
   async updateSigningBonus(id: string, dto: any) {
-    const doc = await this.signingBonusModel.findById(id);
-    if (!doc) throw new BadRequestException('Not found');
-    if (doc.status !== ConfigStatus.DRAFT)
-      throw new BadRequestException('Cannot edit non-draft configuration');
+    try {
+      const doc = await this.signingBonusModel.findById(id).exec();
+      if (!doc) throw new NotFoundException('Signing bonus not found');
 
-    return this.signingBonusModel.findByIdAndUpdate(id, dto, { new: true });
+      if (dto.name) {
+        dto.positionName = dto.name;
+      }
+
+      return await this.signingBonusModel.findByIdAndUpdate(id, dto, { new: true }).exec();
+    } catch (error) {
+      console.error('Error updating signing bonus:', error);
+      throw error;
+    }
   }
 
-  async getAllSigningBonus() {
-    return this.signingBonusModel.find();
+  async getAllSigningBonus(status?: ConfigStatus) {
+    const filter = status ? { status } : {};
+    return this.signingBonusModel.find(filter).sort({ createdAt: -1 }).exec();
   }
 
   async getOneSigningBonus(id: string) {
-    return this.signingBonusModel.findById(id);
+    const doc = await this.signingBonusModel.findById(id).exec();
+    if (!doc) throw new NotFoundException('Signing bonus not found');
+    return doc;
+  }
+
+  async approveSigningBonus(id: string, approvedBy: string) {
+    return this.signingBonusModel.findByIdAndUpdate(
+      id,
+      {
+        status: ConfigStatus.APPROVED,
+        approvedBy: this.toObjectId(approvedBy),
+        approvedAt: new Date()
+      },
+      { new: true }
+    ).exec();
+  }
+
+  async rejectSigningBonus(id: string, rejectedBy: string, reason: string) {
+    return this.signingBonusModel.findByIdAndUpdate(
+      id,
+      {
+        status: ConfigStatus.REJECTED,
+        rejectedBy: this.toObjectId(rejectedBy),
+        rejectedAt: new Date(),
+        rejectionReason: reason
+      },
+      { new: true }
+    ).exec();
   }
 
   // ------- Tax Rules -------
   async createTaxRule(dto: any) {
-    dto.status = ConfigStatus.DRAFT;
-    return this.taxRulesModel.create(dto);
+    try {
+      dto.status = ConfigStatus.DRAFT;
+      return await this.taxRulesModel.create(dto);
+    } catch (error) {
+      console.error('Error creating tax rule:', error);
+      throw new BadRequestException(error.message || 'Failed to create tax rule');
+    }
   }
 
   async updateTaxRule(id: string, dto: any) {
-    const doc = await this.taxRulesModel.findById(id);
-    if (!doc) throw new BadRequestException('Not found');
-    if (doc.status !== ConfigStatus.DRAFT)
-      throw new BadRequestException('Cannot edit non-draft configuration');
-
-    return this.taxRulesModel.findByIdAndUpdate(id, dto, { new: true });
+    try {
+      const doc = await this.taxRulesModel.findById(id).exec();
+      if (!doc) throw new NotFoundException('Tax rule not found');
+      return await this.taxRulesModel.findByIdAndUpdate(id, dto, { new: true }).exec();
+    } catch (error) {
+      console.error('Error updating tax rule:', error);
+      throw error;
+    }
   }
 
-  async getAllTaxRules() {
-    return this.taxRulesModel.find();
+  async getAllTaxRules(status?: ConfigStatus) {
+    const filter = status ? { status } : {};
+    return this.taxRulesModel.find(filter).sort({ createdAt: -1 }).exec();
   }
 
   async getOneTaxRule(id: string) {
-    return this.taxRulesModel.findById(id);
+    const doc = await this.taxRulesModel.findById(id).exec();
+    if (!doc) throw new NotFoundException('Tax rule not found');
+    return doc;
+  }
+
+  async approveTaxRule(id: string, approvedBy: string) {
+    return this.taxRulesModel.findByIdAndUpdate(
+      id,
+      {
+        status: ConfigStatus.APPROVED,
+        approvedBy: this.toObjectId(approvedBy),
+        approvedAt: new Date()
+      },
+      { new: true }
+    ).exec();
+  }
+
+  async rejectTaxRule(id: string, rejectedBy: string, reason: string) {
+    return this.taxRulesModel.findByIdAndUpdate(
+      id,
+      {
+        status: ConfigStatus.REJECTED,
+        rejectedBy: this.toObjectId(rejectedBy),
+        rejectedAt: new Date(),
+        rejectionReason: reason
+      },
+      { new: true }
+    ).exec();
+  }
+
+  async deleteTaxRule(id: string): Promise<void> {
+    try {
+      const result = await this.taxRulesModel.findByIdAndDelete(id).exec();
+      if (!result) {
+        throw new NotFoundException('Tax rule not found');
+      }
+    } catch (error) {
+      console.error('Error deleting tax rule:', error);
+      throw error;
+    }
   }
 
   // ------- Termination Benefits -------
   async createTerminationBenefit(dto: any) {
-    dto.status = ConfigStatus.DRAFT;
-    return this.termModel.create(dto);
+    try {
+      dto.status = ConfigStatus.DRAFT;
+      return await this.termModel.create(dto);
+    } catch (error) {
+      console.error('Error creating termination benefit:', error);
+      throw new BadRequestException(error.message || 'Failed to create termination benefit');
+    }
   }
 
   async updateTerminationBenefit(id: string, dto: any) {
     const doc = await this.termModel.findById(id);
-    if (!doc) throw new BadRequestException('Not found');
-    if (doc.status !== ConfigStatus.DRAFT)
-      throw new BadRequestException('Cannot edit non-draft configuration');
-
-    return this.termModel.findByIdAndUpdate(id, dto, { new: true });
+    if (!doc) throw new BadRequestException('Termination benefit not found');
+    return this.termModel.findByIdAndUpdate(id, dto, { new: true }).exec();
   }
 
-  async getAllTerminationBenefits() {
-    return this.termModel.find();
+  async getAllTerminationBenefits(status?: ConfigStatus) {
+    const filter = status ? { status } : {};
+    return this.termModel.find(filter).sort({ createdAt: -1 }).exec();
   }
 
   async getOneTerminationBenefit(id: string) {
-    return this.termModel.findById(id);
+    const doc = await this.termModel.findById(id).exec();
+    if (!doc) throw new NotFoundException('Termination benefit not found');
+    return doc;
+  }
+
+  async approveTerminationBenefit(id: string, approvedBy: string) {
+    return this.termModel.findByIdAndUpdate(
+      id,
+      {
+        status: ConfigStatus.APPROVED,
+        approvedBy: this.toObjectId(approvedBy),
+        approvedAt: new Date()
+      },
+      { new: true }
+    ).exec();
+  }
+
+  async rejectTerminationBenefit(id: string, rejectedBy: string, reason: string) {
+    return this.termModel.findByIdAndUpdate(
+      id,
+      {
+        status: ConfigStatus.REJECTED,
+        rejectedBy: this.toObjectId(rejectedBy),
+        rejectedAt: new Date(),
+        rejectionReason: reason
+      },
+      { new: true }
+    ).exec();
   }
 
   async deleteTerminationBenefit(id: string): Promise<void> {
-    const doc = await this.termModel.findById(id);
-    if (!doc) throw new BadRequestException('Not found');
-    if (doc.status !== ConfigStatus.DRAFT) {
-      throw new BadRequestException('Can only delete configurations in DRAFT status');
+    try {
+      const trimmedId = id.trim();
+      console.log(`Attempting to delete Termination Benefit with ID: ${trimmedId}`);
+      const result = await this.termModel.findByIdAndDelete(trimmedId).exec();
+      if (!result) {
+        console.warn(`Termination Benefit with ID ${trimmedId} not found for deletion`);
+        throw new NotFoundException('Termination benefit not found');
+      }
+      console.log(`Successfully deleted Termination Benefit: ${result._id}`);
+    } catch (error) {
+      console.error('Error deleting termination benefit:', error);
+      throw error;
     }
-    await this.termModel.deleteOne({ _id: id }).exec();
   }
 
   async deleteSigningBonus(id: string): Promise<void> {
-    const doc = await this.signingBonusModel.findById(id);
-    if (!doc) throw new BadRequestException('Not found');
-    if (doc.status !== ConfigStatus.DRAFT) {
-      throw new BadRequestException('Can only delete configurations in DRAFT status');
+    try {
+      const trimmedId = id.trim();
+      console.log(`Attempting to delete Signing Bonus with ID: ${trimmedId}`);
+      const result = await this.signingBonusModel.findByIdAndDelete(trimmedId).exec();
+      if (!result) {
+        console.warn(`Signing Bonus with ID ${trimmedId} not found for deletion`);
+        throw new NotFoundException('Signing bonus not found');
+      }
+      console.log(`Successfully deleted Signing Bonus: ${result._id}`);
+    } catch (error) {
+      console.error('Error deleting signing bonus:', error);
+      throw error;
     }
-    await this.signingBonusModel.deleteOne({ _id: id }).exec();
   }
 
   /* -------------------------------------------------------------------------- */
@@ -185,8 +318,8 @@ export class PayrollConfigurationService {
       );
     }
 
-    // Validate description: if provided, must be at least 10 characters
-    if (createDto.description && createDto.description.length < 10) {
+    // Validate description: only validate length if description is actually provided and not empty
+    if (createDto.description && createDto.description.trim().length > 0 && createDto.description.length < 10) {
       throw new BadRequestException(
         'Description must be at least 10 characters if provided',
       );
@@ -227,15 +360,9 @@ export class PayrollConfigurationService {
   ): Promise<payTypeDocument> {
     const payTypeDoc = await this.getPayTypeById(id);
 
-    if (payTypeDoc.status !== ConfigStatus.DRAFT) {
-      throw new BadRequestException(
-        'Can only edit configurations in DRAFT status',
-      );
-    }
-
-    // Validate description: if provided, must be at least 10 characters
-    if (updateDto.description !== undefined) {
-      if (updateDto.description && updateDto.description.length < 10) {
+    // Validate description: only validate length if description is provided and not empty
+    if (updateDto.description !== undefined && updateDto.description !== null) {
+      if (updateDto.description.trim().length > 0 && updateDto.description.length < 10) {
         throw new BadRequestException(
           'Description must be at least 10 characters if provided',
         );
@@ -249,12 +376,6 @@ export class PayrollConfigurationService {
   async deletePayType(id: string): Promise<void> {
     const payTypeDoc = await this.getPayTypeById(id);
 
-    if (payTypeDoc.status !== ConfigStatus.DRAFT) {
-      throw new BadRequestException(
-        'Can only delete configurations in DRAFT status',
-      );
-    }
-
     // Validate if pay type can be deleted
     const canDelete = await this.validateDeletion('payType', id);
     if (!canDelete) {
@@ -263,7 +384,10 @@ export class PayrollConfigurationService {
       );
     }
 
-    await this.payTypeModel.deleteOne({ _id: id }).exec();
+    const result = await this.payTypeModel.findByIdAndDelete(id).exec();
+    if (!result) {
+      throw new NotFoundException(`Pay type with id ${id} not found`);
+    }
   }
 
   async approvePayType(
@@ -342,26 +466,34 @@ export class PayrollConfigurationService {
 
   async createPayGrade(
     createDto: CreatePayGradeDto,
-  ): Promise<payGradeDocument> {
-    const exists = await this.payGradeModel
-      .findOne({ grade: createDto.grade })
-      .lean()
-      .exec();
+  ): Promise<any> {
+    try {
+      const exists = await this.payGradeModel
+        .findOne({ grade: createDto.grade })
+        .exec();
 
-    if (exists) {
-      throw new ConflictException(
-        `Pay grade "${createDto.grade}" already exists`,
-      );
+      if (exists) {
+        throw new ConflictException(
+          `Pay grade "${createDto.grade}" already exists`,
+        );
+      }
+
+      this.validateSalaryRules(createDto.baseSalary, createDto.grossSalary);
+
+      const created = new this.payGradeModel({
+        ...createDto,
+        status: ConfigStatus.DRAFT,
+      });
+
+      return await created.save();
+    } catch (error) {
+      console.error('Error in createPayGrade:', error);
+      if (error instanceof ConflictException || error instanceof BadRequestException) {
+        throw error;
+      }
+      // Re-throw as BadRequest with details to avoid 500
+      throw new BadRequestException(error.message || 'Failed to create pay grade');
     }
-
-    this.validateSalaryRules(createDto.baseSalary, createDto.grossSalary);
-
-    const created = new this.payGradeModel({
-      ...createDto,
-      status: ConfigStatus.DRAFT,
-    });
-
-    return created.save();
   }
 
   async getAllPayGrades(
@@ -392,12 +524,6 @@ export class PayrollConfigurationService {
   ): Promise<payGradeDocument> {
     const payGradeDoc = await this.getPayGradeById(id);
 
-    if (payGradeDoc.status !== ConfigStatus.DRAFT) {
-      throw new BadRequestException(
-        'Can only edit configurations in DRAFT status',
-      );
-    }
-
     const baseSalary =
       updateDto.baseSalary ?? payGradeDoc.baseSalary;
     const grossSalary =
@@ -410,23 +536,25 @@ export class PayrollConfigurationService {
   }
 
   async deletePayGrade(id: string): Promise<void> {
-    const payGradeDoc = await this.getPayGradeById(id);
+    try {
+      const payGradeDoc = await this.getPayGradeById(id);
 
-    if (payGradeDoc.status !== ConfigStatus.DRAFT) {
-      throw new BadRequestException(
-        'Can only delete configurations in DRAFT status',
-      );
+      // Validate if pay grade can be deleted (if it's not referenced)
+      const canDelete = await this.validateDeletion('payGrade', id);
+      if (!canDelete) {
+        throw new BadRequestException(
+          'Cannot delete pay grade: it is referenced by employees',
+        );
+      }
+
+      const result = await this.payGradeModel.findByIdAndDelete(id).exec();
+      if (!result) {
+        throw new NotFoundException(`Pay grade with id ${id} not found`);
+      }
+    } catch (error) {
+      console.error('Error deleting pay grade:', error);
+      throw error;
     }
-
-    // Validate if pay grade can be deleted
-    const canDelete = await this.validateDeletion('payGrade', id);
-    if (!canDelete) {
-      throw new BadRequestException(
-        'Cannot delete pay grade: it is referenced by employees',
-      );
-    }
-
-    await this.payGradeModel.deleteOne({ _id: id }).exec();
   }
 
   async approvePayGrade(
@@ -627,12 +755,6 @@ export class PayrollConfigurationService {
   ): Promise<payrollPoliciesDocument> {
     const policy = await this.getPayrollPolicyById(id);
 
-    if (policy.status !== ConfigStatus.DRAFT) {
-      throw new BadRequestException(
-        'Can only edit configurations in DRAFT status',
-      );
-    }
-
     // Check for duplicate policyName + policyType combination if either is being updated
     if (updateDto.policyName || updateDto.policyType) {
       const newPolicyName = updateDto.policyName ?? policy.policyName;
@@ -675,14 +797,10 @@ export class PayrollConfigurationService {
 
   async deletePayrollPolicy(id: string): Promise<void> {
     const policy = await this.getPayrollPolicyById(id);
-
-    if (policy.status !== ConfigStatus.DRAFT) {
-      throw new BadRequestException(
-        'Can only delete configurations in DRAFT status',
-      );
+    const result = await this.payrollPoliciesModel.findByIdAndDelete(id).exec();
+    if (!result) {
+      throw new NotFoundException(`Payroll policy with id ${id} not found`);
     }
-
-    await this.payrollPoliciesModel.deleteOne({ _id: id }).exec();
   }
 
   async approvePayrollPolicy(
@@ -754,10 +872,6 @@ export class PayrollConfigurationService {
 
   async updateAllowance(id: string, payload: Partial<AllowancePayload>) {
     const record = await this.findAllowanceOrFail(id);
-    if (!record) {
-      throw new NotFoundException('Allowance not found');
-    }
-    this.ensureDraft(record.status, 'Allowance');
     if (payload.name !== undefined) record.name = payload.name;
     if (payload.amount !== undefined) record.amount = payload.amount;
     if (payload.createdBy !== undefined) {
@@ -774,11 +888,19 @@ export class PayrollConfigurationService {
   }
 
   async deleteAllowance(id: string): Promise<void> {
-    const record = await this.findAllowanceOrFail(id);
-    if (record.status !== ConfigStatus.DRAFT) {
-      throw new BadRequestException('Can only delete configurations in DRAFT status');
+    try {
+      const trimmedId = id.trim();
+      console.log(`Attempting to delete Allowance with ID: ${trimmedId}`);
+      const result = await this.allowanceModel.findByIdAndDelete(trimmedId).exec();
+      if (!result) {
+        console.warn(`Allowance with ID ${trimmedId} not found for deletion`);
+        throw new NotFoundException('Allowance not found');
+      }
+      console.log(`Successfully deleted Allowance: ${result._id}`);
+    } catch (error) {
+      console.error('Error deleting allowance:', error);
+      throw error;
     }
-    await this.allowanceModel.deleteOne({ _id: id }).exec();
   }
 
   /* -------------------------------------------------------------------------- */
@@ -794,8 +916,34 @@ export class PayrollConfigurationService {
     return this.companySettingsModel.create(payload);
   }
 
-  async getCompanyWideSettings() {
-    return this.companySettingsModel.findOne().sort({ createdAt: -1 }).lean().exec();
+  async getCompanyWideSettings(status?: ConfigStatus) {
+    const filter = status ? { status } : {};
+    return this.companySettingsModel.findOne(filter).sort({ createdAt: -1 }).lean().exec();
+  }
+
+  async approveCompanySettings(id: string, approvedBy: string) {
+    return this.companySettingsModel.findByIdAndUpdate(
+      id,
+      {
+        status: ConfigStatus.APPROVED,
+        approvedBy: this.toObjectId(approvedBy),
+        approvedAt: new Date()
+      },
+      { new: true }
+    ).exec();
+  }
+
+  async rejectCompanySettings(id: string, rejectedBy: string, reason: string) {
+    return this.companySettingsModel.findByIdAndUpdate(
+      id,
+      {
+        status: ConfigStatus.REJECTED,
+        rejectedBy: this.toObjectId(rejectedBy),
+        rejectedAt: new Date(),
+        rejectionReason: reason
+      },
+      { new: true }
+    ).exec();
   }
 
   async updateCompanyWideSettings(id: string, payload: Partial<CompanyWideSettings>) {
@@ -813,13 +961,20 @@ export class PayrollConfigurationService {
   /* -------------------------------------------------------------------------- */
 
   async createInsuranceBracket(payload: InsurancePayload) {
-    this.ensureSalaryRange(payload.minSalary, payload.maxSalary);
-    const created = await this.insuranceModel.create({
-      ...payload,
-      createdBy: this.toObjectId(payload.createdBy),
-      status: ConfigStatus.DRAFT,
-    });
-    return created.toObject();
+    try {
+      this.ensureSalaryRange(payload.minSalary, payload.maxSalary);
+      const created = new this.insuranceModel({
+        ...payload,
+        amount: payload.amount ?? 0,
+        createdBy: this.toObjectId(payload.createdBy),
+        status: ConfigStatus.DRAFT,
+      });
+      return await created.save();
+    } catch (error) {
+      console.error('Error in createInsuranceBracket:', error);
+      if (error instanceof BadRequestException) throw error;
+      throw new BadRequestException(error.message || 'Failed to create insurance bracket');
+    }
   }
 
   async listInsuranceBrackets(status?: ConfigStatus) {
@@ -832,27 +987,35 @@ export class PayrollConfigurationService {
   }
 
   async updateInsuranceBracket(id: string, payload: Partial<InsurancePayload>) {
-    const record = await this.findInsuranceOrFail(id);
-    this.ensureDraft(record.status, 'Insurance bracket');
-    if (payload.minSalary !== undefined || payload.maxSalary !== undefined) {
-      this.ensureSalaryRange(
-        payload.minSalary ?? record.minSalary,
-        payload.maxSalary ?? record.maxSalary,
-      );
+    try {
+      const record = await this.findInsuranceOrFail(id);
+      if (payload.minSalary !== undefined || payload.maxSalary !== undefined) {
+        this.ensureSalaryRange(
+          payload.minSalary ?? record.minSalary,
+          payload.maxSalary ?? record.maxSalary,
+        );
+      }
+      record.set({
+        ...payload,
+        createdBy:
+          payload.createdBy !== undefined ? this.toObjectId(payload.createdBy) : record.createdBy,
+      });
+      return await record.save();
+    } catch (error) {
+      console.error('Error updating insurance bracket:', error);
+      throw error;
     }
-    record.set({
-      ...payload,
-      createdBy:
-        payload.createdBy !== undefined ? this.toObjectId(payload.createdBy) : record.createdBy,
-    });
-    return record.save();
   }
 
   async setInsuranceBracketStatus(id: string, payload: UpdateStatusPayload) {
-    const record = await this.findInsuranceOrFail(id);
-    this.ensureDraft(record.status, 'Insurance bracket status');
-    this.applyStatus(record, payload);
-    return record.save();
+    try {
+      const record = await this.findInsuranceOrFail(id);
+      this.applyStatus(record, payload);
+      return await record.save();
+    } catch (error) {
+      console.error('Error setting insurance bracket status:', error);
+      throw error;
+    }
   }
 
   async deleteInsuranceBracket(id: string) {

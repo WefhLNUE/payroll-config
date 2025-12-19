@@ -9,6 +9,9 @@ export type signingBonusDocument = HydratedDocument<signingBonus>;
 export class signingBonus {
   @Prop({ required: true, unique: true })
   name: string;
+
+  @Prop({ select: false })
+  positionName?: string; // Sync field to bypass stale DB indexes
   @Prop({ required: true, min: 0 })
   amount: number;
   @Prop({
